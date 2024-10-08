@@ -1,0 +1,11 @@
+/*
+/*/
+!/__MACOSX
+!/Assets
+!/ProjectSettings
+!/UserSettings
+!/Packages
+!/Frontkit
+!/user.keystore
+!/leppleapps.keystore
+!/.gitignore

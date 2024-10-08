@@ -1,0 +1,886 @@
+{
+    "m_SelectedDeviceId": "R58R33V3EJL",
+    "m_SelectedProcess": {
+        "deviceId": "R58R33V3EJL",
+        "name": "com.lepple.projectmo",
+        "processId": 16893,
+        "exited": false
+    },
+    "m_SelectedPriority": 0,
+    "m_KnownProcessesForSerialization": [
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.sec.android.app.launcher",
+            "processId": 29008,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.android.settings",
+            "processId": 26539,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 9288,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 10359,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 10974,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 11205,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 11899,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 7333,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 9467,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 11052,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 12236,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 13292,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 14702,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 17479,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 17869,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 18737,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 18997,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 22171,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 24194,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 25359,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 28160,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 28697,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 29140,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 30260,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 30900,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 31222,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 31511,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 31975,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 32632,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 1872,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 2272,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 3002,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 3673,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 4690,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 5337,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 6432,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 7436,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 8658,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 9253,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 9667,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 10189,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 10526,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 21693,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 32311,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 5322,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 7984,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 8387,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 11132,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 15002,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 15786,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 16060,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 22324,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 22986,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 23612,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 23926,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 24465,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 25036,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 25457,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 26939,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 29213,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 29876,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 30825,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 32568,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 6211,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 6687,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 7039,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 7597,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 9818,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 10307,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 10697,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 20874,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 32158,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 9521,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 10799,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 12072,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 12456,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 12851,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 13949,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 14217,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 14488,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 14838,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 15141,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 15880,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 16207,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 16496,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 16866,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 19776,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 20613,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 20901,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 21278,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 21717,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 22124,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 25809,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 29391,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 31174,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 31687,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 32070,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 32619,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 1180,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 1849,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 2682,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 3208,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 4207,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 4781,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 5348,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 5980,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 6701,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 7009,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 7314,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 7765,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 8180,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 8490,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 8858,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 9231,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 9590,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 10018,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 10849,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 11774,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 12135,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 12529,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 12898,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 13434,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 13880,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 14240,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 14583,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 14915,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 15197,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 15542,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 15840,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 16211,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 16638,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 16893,
+            "exited": false
+        }
+    ],
+    "m_Tags": {
+        "m_Entries": [
+            {
+                "m_Name": "Filter by all listed tags",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "No Filter",
+                "m_Selected": true
+            },
+            {
+                "m_Name": "",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "Tag Control...",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "Unity",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "CRASH",
+                "m_Selected": false
+            }
+        ]
+    },
+    "m_ExtraWindowState": {
+        "Type": 0,
+        "Height": 0.0
+    },
+    "m_MemoryViewerState": {
+        "MemoryWindowWidth": 170.0,
+        "MemoryTypeEnabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "MemoryGroup": 2,
+        "AutoCapture": true
+    },
+    "m_FilterOptions": {
+        "m_Filter": "",
+        "m_UseRegularExpressions": false,
+        "m_MatchCase": false
+    },
+    "m_SymbolPaths": [],
+    "m_CaptureVideoSettings": {
+        "TimeLimitEnabled": false,
+        "TimeLimit": 180,
+        "VideoSizeEnabled": false,
+        "VideoSizeX": 1280,
+        "VideoSizeY": 720,
+        "BitRateEnabled": false,
+        "BitRateK": 20000,
+        "DisplayIdEnabled": false,
+        "DisplayId": ""
+    },
+    "m_InputSettings": {
+        "ShiftModifier": false,
+        "SendText": "",
+        "PosixKillSignal": 0,
+        "TargetProcess": {
+            "deviceId": "",
+            "name": "",
+            "processId": 0,
+            "exited": false
+        }
+    },
+    "m_AutoScroll": 1
+}
