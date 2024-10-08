@@ -6,6 +6,7 @@ public class CameraController : MonoBehaviour
 {
     public float smoothness;
     public Transform targetObject;
+    public Joystick Joystick;
     private Vector3 cameraPosition;
     private Vector3 cameraOffset;
 
@@ -23,83 +24,52 @@ public class CameraController : MonoBehaviour
 
         if (Input.touchCount < 2) return;
 
-        HandleRotation();
+        Touch t1 = Input.touches[0];
+        Touch t2 = Input.touches[1];
+
+        if (t1.phase == TouchPhase.Moved || t2.phase == TouchPhase.Moved)
+        {
+            TouchLogic.Calculate();
+
+            bool playerIsMoving = Joystick.Horizontal != 0 || Joystick.Vertical != 0;
+
+            Debug.Log(Mathf.Abs(TouchLogic.turnAngleDelta) + "turnAngleDeltaMATHF");
+            Debug.Log((Mathf.Abs(TouchLogic.turnAngleDelta) < 3.0f) + "pinchDistanceDeltaBOOL");
+
+            if (Mathf.Abs(TouchLogic.pinchDistanceDelta) > 0 && Mathf.Abs(TouchLogic.turnAngleDelta) < 0.5f && !playerIsMoving )
+            {
+                HandleZoom(TouchLogic.pinchDistanceDelta);
+            }
+
+            if (Mathf.Abs(TouchLogic.turnAngleDelta) > 0)
+            {
+                HandleRotation(TouchLogic.turnAngleDelta);
+            }
+        }
     }
 
     void HandleFolow()
     {
-        transform.LookAt(targetObject);
-        cameraPosition = targetObject.position + cameraOffset;
-        transform.position = Vector3.Lerp(transform.position, cameraPosition, smoothness*Time.fixedDeltaTime);
+        // transform.LookAt(targetObject);
+        cameraPosition = Vector3.Lerp(transform.position, targetObject.position + cameraOffset, smoothness * Time.deltaTime);
+        transform.position = cameraPosition;
     }
 
-    // void HandleZoom()
-    // {
-    //     float currentLevel = transform.position.y;
-    //     float newLevel;
-
-    //     if (pinchDistanceDelta < 0) {
-    //         if (currentLevel > 0 && currentLevel < 19) 
-    //         {
-    //             newLevel = 25;
-    //         } else if (currentLevel > 19 && currentLevel < 26)
-    //         {
-    //             newLevel = 50;
-    //         } else
-    //         {
-    //             return;
-    //         }
-    //     }
-    //     else
-    //     {
-    //         if (currentLevel > 26 && currentLevel < 51) 
-    //         {
-    //             newLevel = 25;
-    //         } else if (currentLevel > 19 && currentLevel < 26)
-    //         {
-    //             newLevel = 18;
-    //         } else
-    //         {
-    //             return;
-    //         }
-    //     }
-
-    //     Vector3 zoomCameraPosition = new Vector3(transform.position.x, newLevel, transform.position.z);
-    //     cameraOffset = zoomCameraPosition - targetObject.position;
-    // }
-
-
-    void HandleRotation()
+    void HandleZoom(float pinchDistanceDelta)
     {
-        Touch touch0 = Input.GetTouch(0);
-        switch (touch0.phase) {
-            case TouchPhase.Stationary:
-                break;
-            case TouchPhase.Moved:
-                break;
-            default: 
-                return;
-        }
+        float zoomSpeed = 3f;
+        float zoomAmount = pinchDistanceDelta * zoomSpeed * Time.deltaTime;
+        Vector3 zoomResult = cameraOffset + transform.forward * zoomAmount;
 
-        Touch touch1 = Input.GetTouch(1);
-        switch (touch1.phase) {
-            case TouchPhase.Stationary:
-                break;
-            case TouchPhase.Moved:
-                break;
-            default:
-                return;
-        }
+        if (zoomResult.y > 30 || zoomResult.y < 15) return;
 
-        var pos1 = touch0.position;
-        var pos2 = touch1.position;
-        var pos1b = touch0.position - touch0.deltaPosition;
-        var pos2b = touch1.position - touch1.deltaPosition;
+        cameraOffset += transform.forward * zoomAmount;
+    }
 
-        var screenCenter = targetObject.position;
-    
-        transform.position = targetObject.position + cameraOffset;
-        transform.RotateAround(screenCenter, Vector3.up, Vector3.SignedAngle(pos2b - pos1b, pos2 - pos1, Vector3.forward));
-        cameraOffset = transform.position - targetObject.position;
+    void HandleRotation(float turnAngleDelta)
+    {
+        float angle = -turnAngleDelta * 0.6f;
+        transform.RotateAround(targetObject.position, Vector3.up, angle);
+        cameraOffset = Quaternion.Euler(0, angle, 0) * cameraOffset;
     }
 }

@@ -510,14 +510,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 250.3, y: 25, z: 230}
+  m_LocalRotation: {x: 0.45009848, y: 0, z: 0, w: 0.89297897}
+  m_LocalPosition: {x: 250.3, y: 26, z: 236.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1311832583}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 53.5, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,7 +531,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smoothness: 5
-  targetObject: {fileID: 2076947108}
+  targetObject: {fileID: 2036993665}
+  Joystick: {fileID: 1688917808}
 --- !u!1 &1311832579
 GameObject:
   m_ObjectHideFlags: 0
@@ -1078,7 +1079,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2036993665}
   m_Layer: 0
-  m_Name: Wrapper
+  m_Name: Orbit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
