@@ -20,17 +20,30 @@ public class PlayerOpenWorld : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 direction = Quaternion.Euler(0f, Camera.main.transform.eulerAngles.y, 0f) * new Vector3(_joystick.Horizontal * speed, _rigidbody.velocity.y, _joystick.Vertical * speed);
-        _rigidbody.velocity = direction;
+        Vector3 direction = Quaternion.Euler(0f, Camera.main.transform.eulerAngles.y, 0f) * new Vector3(_joystick.Horizontal * speed, _rigidbody.linearVelocity.y, _joystick.Vertical * speed);
+        _rigidbody.linearVelocity = direction;
+
+        Debug.Log( _rigidbody.linearVelocity.magnitude + "magnitude");
 
         if (_joystick.Horizontal != 0 || _joystick.Vertical != 0)
         {
             _orbit.rotation = Quaternion.Slerp(_orbit.rotation, Quaternion.LookRotation(direction), 0.15f);
-            _animator.SetBool("isMoving", true);
+            float magnitude = _rigidbody.linearVelocity.magnitude;
+            _animator.speed = magnitude / speed;
+            if (magnitude > 5.0f)
+            {
+                _animator.SetBool("IsRunning", true);
+                _animator.SetBool("IsWalking", false);
+            } else {
+                _animator.SetBool("IsRunning", false);
+                _animator.SetBool("IsWalking", true);
+            }
         }
         else
         {
-            _animator.SetBool("isMoving", false);
+            _animator.speed = 1f;
+            _animator.SetBool("IsRunning", false);
+            _animator.SetBool("IsWalking", false);
         }
     }
 }

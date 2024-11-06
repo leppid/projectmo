@@ -1,0 +1,52 @@
+.unity-base-text-field__input {
+    padding-right: 0;
+    padding-left: 35px;
+}
+
+.unity-base-text-field__input--placeholder {
+    color: rgb(120, 120, 120);
+    padding-top: 1px;
+    padding-right: 1px;
+    padding-bottom: 1px;
+    padding-left: 35px;
+}
+
+.input {
+    width: auto;
+    height: 200px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 100px;
+    margin-right: 100px;
+    margin-bottom: 100px;
+    margin-left: 100px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+
+.input:focus {
+    scale: 1.02 1.02;
+}
+
+.button {
+    width: auto;
+    transition-duration: 0.1s;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    border-bottom-left-radius: 50px;
+    margin-top: 400px;
+    margin-right: 100px;
+    margin-bottom: 100px;
+    margin-left: 100px;
+    background-image: url("project://database/Assets/Project/Models/Textures/Glass%20Window.png?fileID=2800000&guid=676283ec0ec8e0347bf7ab0447b8a826&type=3#Glass Window");
+    height: 220px;
+}
+
+.button:active {
+    scale: 0.9 0.9;
+}
