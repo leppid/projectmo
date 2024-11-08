@@ -4,33 +4,40 @@ using RSG;
 
 public class ApiManager : MonoBehaviour
 {
-    public static ApiManager instance;
-    
-    private readonly string basePath = "http://localhost:3000/";
-    private RequestHelper currentRequest;
+    private static ApiManager _instance = null;
+    public static ApiManager instance
+    {
+        get { return _instance; }
+    }
 
     public void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-        if (instance == null)
-            instance = this;
-        else
+        if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
             return;
         }
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
     }
+    
+    private readonly string basePath = "http://91.202.145.155:3000/";
+    private RequestHelper currentRequest;
 
-    public Promise<T> Get<T>(string path, int id = -1)
+    public Promise<T> Get<T>(string path, int id = 0)
     {
-        if (id != -1)
-            return (Promise<T>)RestClient.Get(basePath + path + "/" + id);
+        SetAuthorizationHeader();
+
+        if (id != 0)
+            return (Promise<T>)RestClient.Get<T>(basePath + path + "/" + id);
         else
-            return (Promise<T>)RestClient.Get(basePath + path);
+            return (Promise<T>)RestClient.Get<T>(basePath + path);
     }
 
     public Promise<T> Post<T>(string path, object body)
     {
+        SetAuthorizationHeader();
+
         currentRequest = new RequestHelper
         {
             Uri = basePath + path,
@@ -43,6 +50,8 @@ public class ApiManager : MonoBehaviour
 
     public Promise<T> Put<T>(string path, object body)
     {
+        SetAuthorizationHeader();
+
         currentRequest = new RequestHelper
         {
             Uri = basePath + path,
@@ -59,6 +68,8 @@ public class ApiManager : MonoBehaviour
 
     public Promise<T> Delete<T>(string path)
     {
+        SetAuthorizationHeader();
+
         return (Promise<T>)RestClient.Delete(basePath + path);
     }
 
@@ -69,6 +80,12 @@ public class ApiManager : MonoBehaviour
             currentRequest.Abort();
             currentRequest = null;
         }
+    }
+
+    private void SetAuthorizationHeader()
+    {
+        string token = "Bearer " + PlayerPrefs.GetString("authToken", "none");
+        RestClient.DefaultRequestHeaders["Authorization"] = token;
     }
 }
 
