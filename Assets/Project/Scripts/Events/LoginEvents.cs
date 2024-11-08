@@ -10,16 +10,20 @@ using System;
 public class LoginEvents : MonoBehaviour
 {
     private UIDocument uiDoc;
+    private Button _logoButton;
     private VisualElement _form;
     private Label _loading;
     private Label _error;
     private TextField _loginInput;
     private TextField _passwordInput;
     private Button _authButton;
+    private int logoClickedTimes = 0;
 
     private void Awake()
     {
         uiDoc = GetComponent<UIDocument>();
+        _logoButton = uiDoc.rootVisualElement.Q<Button>("Logo");
+        _logoButton.clicked += LogoButtonClicked;
         _form = uiDoc.rootVisualElement.Q<VisualElement>("Form");
         _loading = uiDoc.rootVisualElement.Q<Label>("Loading");
         _error = uiDoc.rootVisualElement.Q<Label>("Error");
@@ -59,6 +63,19 @@ public class LoginEvents : MonoBehaviour
         _authButton.SetEnabled(_loginInput.value.Length > 0 && _passwordInput.value.Length > 0);
     }
 
+    void LogoButtonClicked()
+    {
+        if (logoClickedTimes < 3)
+        {
+            logoClickedTimes++;
+        }
+        else
+        {
+            logoClickedTimes = 0;
+            StartCoroutine(LoadPrototype());
+        }
+    }
+
     void OnAuthButtonClicked()
     {
         SendAuthRequest();
@@ -71,8 +88,8 @@ public class LoginEvents : MonoBehaviour
 
     void SendAuthRequest()
     {
-        _authButton.text = "Authenticating...";
         EnableInputs(false);
+        _authButton.text = "Authenticating...";
 
         var login = _loginInput.value;
         var password = _passwordInput.value;
@@ -82,11 +99,7 @@ public class LoginEvents : MonoBehaviour
         {
             PlayerPrefs.SetString("authToken", res.token);
             PlayerPrefs.SetString("playerJson", JsonConvert.SerializeObject(res));
-            _form.style.display = DisplayStyle.None;
-            _loading.style.display = DisplayStyle.Flex;
             _error.style.display = DisplayStyle.None;
-            _authButton.text = "Authorize";
-            EnableInputs(true);
             StartCoroutine(LoadPrototype());
         }).Catch((err) =>
         {
@@ -94,10 +107,12 @@ public class LoginEvents : MonoBehaviour
             if (error.IsNetworkError) _error.text = "Connection error";
             if (error.IsHttpError)
             {
-                ServerMessage msg = JsonConvert.DeserializeObject<ServerMessage>(error.Response);
-                _error.text = msg.message;
+                ServerMessage sm = JsonConvert.DeserializeObject<ServerMessage>(error.Response);
+                _error.text = sm.message;
             }
             _error.style.display = DisplayStyle.Flex;
+        }).Finally(() =>
+        {
             _authButton.text = "Authorize";
             EnableInputs(true);
         });
@@ -112,6 +127,8 @@ public class LoginEvents : MonoBehaviour
 
     public IEnumerator LoadPrototype()
     {
+        _form.style.display = DisplayStyle.None;
+        _loading.style.display = DisplayStyle.Flex;
         yield return new WaitForSeconds(1);
         AsyncOperation async = SceneManager.LoadSceneAsync("World");
         async.allowSceneActivation = false;

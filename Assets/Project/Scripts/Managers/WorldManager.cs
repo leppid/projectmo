@@ -20,7 +20,11 @@ public class WorldManager : MonoBehaviour
             return;
         }
 
-        player = JsonConvert.DeserializeObject<Player>(PlayerPrefs.GetString("playerJson"));
+        if (PlayerPrefs.GetString("playerJson", "null") != "null")
+            player = JsonConvert.DeserializeObject<Player>(PlayerPrefs.GetString("playerJson"));
+        else
+            player = new Player { login = "Guest", id = "-1", token = "none" };
+
         _player.UpdateNickname(player.login);
     }
 }
