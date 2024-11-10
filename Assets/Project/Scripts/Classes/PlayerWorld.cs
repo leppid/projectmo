@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class PlayerOpenWorld : MonoBehaviour
+public class PlayerWorld : MonoBehaviour
 {
     public float speed = 3f;
 
@@ -13,11 +11,12 @@ public class PlayerOpenWorld : MonoBehaviour
     private Transform _orbit;
     private Animator _animator;
     public Transform _nickname;
+    private float movingSeconds = 0;
 
     void Awake()
     {
         _orbit = transform.GetChild(0).transform;
-        _animator = transform.GetChild(0).GetChild(0).transform.GetComponent<Animator>();
+        _animator = transform.GetChild(0).GetChild(0).GetChild(2).GetComponent<Animator>();
         _nickname = transform.GetChild(1).transform;
     }
 
@@ -31,6 +30,7 @@ public class PlayerOpenWorld : MonoBehaviour
             _orbit.rotation = Quaternion.Slerp(_orbit.rotation, Quaternion.LookRotation(direction), 0.15f);
             float magnitude = _rigidbody.linearVelocity.magnitude;
             _animator.speed = magnitude / speed;
+
             if (magnitude > 5.0f)
             {
                 _animator.SetBool("IsRunning", true);
@@ -41,12 +41,25 @@ public class PlayerOpenWorld : MonoBehaviour
                 _animator.SetBool("IsRunning", false);
                 _animator.SetBool("IsWalking", true);
             }
+
+            movingSeconds += 1 * Time.deltaTime;
+
+            if (movingSeconds > 10f)
+            {
+                UiManager.instance.HideBottomBar();
+            }
         }
         else
         {
             _animator.speed = 1f;
             _animator.SetBool("IsRunning", false);
             _animator.SetBool("IsWalking", false);
+
+            if (movingSeconds > 0)
+            {
+                UiManager.instance.ShowBottomBar();
+                movingSeconds = 0;
+            }
         }
 
         _nickname.transform.rotation = Camera.main.transform.rotation;

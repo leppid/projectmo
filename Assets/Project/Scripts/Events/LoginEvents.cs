@@ -46,7 +46,7 @@ public class LoginEvents : MonoBehaviour
         _form.style.display = DisplayStyle.None;
         _loading.style.display = DisplayStyle.Flex;
 
-        ApiManager.instance.Get<Player>("session")
+        ApiManager.instance.Get<PlayerData>("session")
         .Then(res =>
         {
             PlayerPrefs.SetString("playerJson", JsonConvert.SerializeObject(res));
@@ -94,7 +94,7 @@ public class LoginEvents : MonoBehaviour
         var login = _loginInput.value;
         var password = _passwordInput.value;
 
-        ApiManager.instance.Post<Player>("session", new PlayerData { login = login, password = password })
+        ApiManager.instance.Post<PlayerData>("session", new PlayerSessionParams { login = login, password = password })
         .Then(res =>
         {
             PlayerPrefs.SetString("authToken", res.token);

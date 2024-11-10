@@ -9,18 +9,21 @@ public class CameraController : MonoBehaviour
     public Joystick Joystick;
     private Vector3 cameraPosition;
     private Vector3 cameraOffset;
+    private Vector3 initialCameraOffset;
+    private float resetAngle;
 
     void Start()
     {
         Application.targetFrameRate = 120;
         cameraOffset = transform.position - targetObject.position;
+        initialCameraOffset = cameraOffset;
     }
 
     void Update()
     {
         transform.GetChild(0).gameObject.SetActive(Input.touchCount < 2);
 
-        HandleFolow();
+        Folow();
 
         if (Input.touchCount < 2) return;
 
@@ -33,29 +36,26 @@ public class CameraController : MonoBehaviour
 
             bool playerIsMoving = Joystick.Horizontal != 0 || Joystick.Vertical != 0;
 
-            Debug.Log(Mathf.Abs(TouchLogic.turnAngleDelta) + "turnAngleDeltaMATHF");
-            Debug.Log((Mathf.Abs(TouchLogic.turnAngleDelta) < 3.0f) + "pinchDistanceDeltaBOOL");
-
-            if (Mathf.Abs(TouchLogic.pinchDistanceDelta) > 0 && Mathf.Abs(TouchLogic.turnAngleDelta) < 0.5f && !playerIsMoving )
+            if (Mathf.Abs(TouchLogic.pinchDistanceDelta) > 0 && Mathf.Abs(TouchLogic.turnAngleDelta) < 0.5f && !playerIsMoving)
             {
-                HandleZoom(TouchLogic.pinchDistanceDelta);
+                Zoom(TouchLogic.pinchDistanceDelta);
             }
 
             if (Mathf.Abs(TouchLogic.turnAngleDelta) > 0)
             {
-                HandleRotation(TouchLogic.turnAngleDelta);
+                Rotate(TouchLogic.turnAngleDelta);
             }
         }
     }
 
-    void HandleFolow()
+    private void Folow()
     {
         // transform.LookAt(targetObject);
         cameraPosition = Vector3.Lerp(transform.position, targetObject.position + cameraOffset, smoothness * Time.deltaTime);
         transform.position = cameraPosition;
     }
 
-    void HandleZoom(float pinchDistanceDelta)
+    private void Zoom(float pinchDistanceDelta)
     {
         float zoomSpeed = 3f;
         float zoomAmount = pinchDistanceDelta * zoomSpeed * Time.deltaTime;
@@ -66,10 +66,18 @@ public class CameraController : MonoBehaviour
         cameraOffset += transform.forward * zoomAmount;
     }
 
-    void HandleRotation(float turnAngleDelta)
+    private void Rotate(float turnAngleDelta)
     {
         float angle = -turnAngleDelta * 0.6f;
+        resetAngle += angle;
         transform.RotateAround(targetObject.position, Vector3.up, angle);
         cameraOffset = Quaternion.Euler(0, angle, 0) * cameraOffset;
+    }
+
+    public void Reset()
+    {
+        transform.RotateAround(targetObject.position, Vector3.up, -resetAngle);
+        resetAngle = 0;
+        cameraOffset = initialCameraOffset;
     }
 }
