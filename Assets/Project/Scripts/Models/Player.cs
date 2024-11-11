@@ -1,4 +1,4 @@
-namespace PlayerModels
+namespace ProjectModels
 {
     public class PlayerData
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
-using PlayerModels;
 using Newtonsoft.Json;
+using ProjectModels;
 
 public class PlayerManager : MonoBehaviour
 {

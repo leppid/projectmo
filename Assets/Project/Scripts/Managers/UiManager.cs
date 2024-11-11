@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using ProjectModels;
 
 public class UiManager : MonoBehaviour
 {
@@ -33,7 +33,7 @@ public class UiManager : MonoBehaviour
         _UI.GetComponent<WorldEvents>().HideBottomBar();
     }
 
-        public void ShowCompass()
+    public void ShowCompass()
     {
         _UI.GetComponent<WorldEvents>().ShowCompass();
     }
@@ -46,6 +46,16 @@ public class UiManager : MonoBehaviour
     public void ResetCompass()
     {
         _camera.Reset();
+    }
+
+    public void SetActionData(ActionData data)
+    {
+        _UI.GetComponent<WorldEvents>().SetActionData(data);
+    }
+
+    public void ClearActionData()
+    {
+        _UI.GetComponent<WorldEvents>().ClearActionData();
     }
 }
 

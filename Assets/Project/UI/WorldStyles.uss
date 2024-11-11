@@ -55,7 +55,7 @@
     width: 33%;
     height: 100%;
     font-size: 70px;
-    background-color: rgba(0, 0, 0, 0.39);
+    background-color: rgba(0, 0, 0, 0.31);
     border-left-color: rgba(0, 0, 0, 0);
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
@@ -64,6 +64,14 @@
     -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Examples%20&%20Extras/Fonts/Roboto-Bold.ttf?fileID=12800000&guid=4beb055f07aaff244873dec698d0363e&type=3#Roboto-Bold");
     text-shadow: 66.7px 78.1px 18.1px rgba(0, 0, 0, 0);
     transition-duration: 0.2s;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
 }
 
 .menu-button:active {
@@ -89,4 +97,89 @@
     scale: 0.9 0.9;
     transition-property: scale;
     transition-duration: 0.2s;
+}
+
+.action-button {
+    height: 230px;
+    position: absolute;
+    bottom: 500px;
+    top: auto;
+    left: auto;
+    right: auto;
+    align-self: center;
+    background-image: url("project://database/Assets/Project/Models/Textures/Boards%20Dark.png?fileID=2800000&guid=4a9e43f9e7f3bec44b5670532b5ef2d9&type=3#Boards Dark");
+    -unity-background-image-tint-color: rgb(255, 156, 93);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-left-color: rgb(255, 143, 0);
+    border-right-color: rgb(255, 143, 0);
+    border-top-color: rgb(255, 143, 0);
+    border-bottom-color: rgb(255, 143, 0);
+    width: 35%;
+    color: rgb(217, 217, 217);
+    display: flex;
+    transition-property: scale;
+    background-repeat: space space;
+    background-size: cover;
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    font-size: 75px;
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Examples%20&%20Extras/Fonts/Roboto-Bold.ttf?fileID=12800000&guid=4beb055f07aaff244873dec698d0363e&type=3#Roboto-Bold");
+    transition-duration: 0.2s;
+    -unity-slice-scale: 0;
+    overflow: visible;
+    opacity: 1;
+    align-items: auto;
+    justify-content: flex-start;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.action-button:active {
+    height: 230px;
+    position: absolute;
+    bottom: 500px;
+    top: auto;
+    left: auto;
+    right: auto;
+    align-self: center;
+    background-image: url("project://database/Assets/Project/Models/Textures/Boards%20Dark.png?fileID=2800000&guid=4a9e43f9e7f3bec44b5670532b5ef2d9&type=3#Boards Dark");
+    -unity-background-image-tint-color: rgb(255, 156, 93);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-left-color: rgb(255, 143, 0);
+    border-right-color: rgb(255, 143, 0);
+    border-top-color: rgb(255, 143, 0);
+    border-bottom-color: rgb(255, 143, 0);
+    width: 35%;
+    color: rgb(217, 217, 217);
+    display: flex;
+    transition-property: scale;
+    background-repeat: space space;
+    background-size: cover;
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    font-size: 75px;
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Examples%20&%20Extras/Fonts/Roboto-Bold.ttf?fileID=12800000&guid=4beb055f07aaff244873dec698d0363e&type=3#Roboto-Bold");
+    transition-duration: 0.2s;
+    scale: 0.9 0.9;
+    overflow: visible;
+    visibility: visible;
 }
