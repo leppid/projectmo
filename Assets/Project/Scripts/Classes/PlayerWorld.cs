@@ -46,7 +46,7 @@ public class PlayerWorld : MonoBehaviour
 
             if (movingSeconds > 10f)
             {
-                UiManager.instance.HideBottomBar();
+                UIManager.instance.DisplayBottomBar(false);
             }
         }
         else
@@ -57,7 +57,7 @@ public class PlayerWorld : MonoBehaviour
 
             if (movingSeconds > 0)
             {
-                UiManager.instance.ShowBottomBar();
+                UIManager.instance.DisplayBottomBar(true);
                 movingSeconds = 0;
             }
         }
@@ -68,5 +68,11 @@ public class PlayerWorld : MonoBehaviour
     public void UpdateNickname(string text)
     {
         _nickname.GetComponent<TextMeshProUGUI>().text = text;
+    }
+
+    public void SetPosition(Vector3 position)
+    {
+        GetComponent<Rigidbody>().position = position;
+        transform.position = position;
     }
 }

@@ -63,7 +63,8 @@ public class ApiManager : MonoBehaviour
                 Debug.Log(string.Format("Retry #{0} Status {1}\nError: {2}", retries, err.StatusCode, err));
             }
         };
-        return (Promise<T>)RestClient.Put<ResponseHelper>(currentRequest);
+
+        return (Promise<T>)RestClient.Put<T>(currentRequest);
     }
 
     public Promise<T> Delete<T>(string path)

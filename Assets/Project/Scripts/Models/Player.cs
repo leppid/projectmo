@@ -4,6 +4,9 @@ namespace ProjectModels
     {
         public string id;
         public string login;
+        public string displayName;
+        public string location;
+        public string position;
         public string token;
     }
 
@@ -11,5 +14,11 @@ namespace ProjectModels
     {
         public string login;
         public string password;
+    }
+
+    public class PlayerLocationParams
+    {
+        public string location;
+        public string position;
     }
 }

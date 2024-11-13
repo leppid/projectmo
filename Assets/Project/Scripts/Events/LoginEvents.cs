@@ -17,37 +17,47 @@ public class LoginEvents : MonoBehaviour
     private TextField _passwordInput;
     private Button _authButton;
     private int logoClickedTimes = 0;
+    private string loadLocation = "Hills";
 
-    private void Awake()
+    void Awake()
     {
         uiDoc = GetComponent<UIDocument>();
         _logoButton = uiDoc.rootVisualElement.Q<Button>("Logo");
-        _logoButton.clicked += LogoButtonClicked;
+        _logoButton.clicked += LogoPressed;
         _form = uiDoc.rootVisualElement.Q<VisualElement>("Form");
         _loading = uiDoc.rootVisualElement.Q<Label>("Loading");
         _error = uiDoc.rootVisualElement.Q<Label>("Error");
         _loginInput = uiDoc.rootVisualElement.Q<TextField>("Login");
-        _loginInput.RegisterCallback<ChangeEvent<string>>(OnInputChanged);
         _passwordInput = uiDoc.rootVisualElement.Q<TextField>("Password");
-        _passwordInput.RegisterCallback<ChangeEvent<string>>(OnInputChanged);
+        _loginInput.RegisterCallback<ChangeEvent<string>>(HandleButton);
+        _passwordInput.RegisterCallback<ChangeEvent<string>>(HandleButton);
         _authButton = uiDoc.rootVisualElement.Q<Button>("Auth");
-        _authButton.clicked += OnAuthButtonClicked;
+        _authButton.clicked += AuthPressed;
     }
 
-    private void Start()
+    void Start()
     {
+        PlayerPrefs.DeleteKey("playerJson");
+
         if (PlayerPrefs.GetString("IsLogOut") == "true")
         {
-            PlayerPrefs.DeleteAll();
+            PlayerPrefs.DeleteKey("authToken");
+            PlayerPrefs.DeleteKey("IsLogOut");
             return;
         };
 
+        FetchSession();
+    }
+
+    void FetchSession()
+    {
         _form.style.display = DisplayStyle.None;
         _loading.style.display = DisplayStyle.Flex;
 
         ApiManager.instance.Get<PlayerData>("session")
         .Then(res =>
         {
+            loadLocation = res.location;
             PlayerPrefs.SetString("playerJson", JsonConvert.SerializeObject(res));
             StartCoroutine(LoadPrototype());
         }).Catch(err =>
@@ -57,12 +67,7 @@ public class LoginEvents : MonoBehaviour
         });
     }
 
-    private void OnInputChanged(ChangeEvent<string> evt)
-    {
-        _authButton.SetEnabled(_loginInput.value.Length > 0 && _passwordInput.value.Length > 0);
-    }
-
-    void LogoButtonClicked()
+    void LogoPressed()
     {
         if (logoClickedTimes < 3)
         {
@@ -75,17 +80,12 @@ public class LoginEvents : MonoBehaviour
         }
     }
 
-    void OnAuthButtonClicked()
+    void AuthPressed()
     {
-        SendAuthRequest();
+        CreateSession();
     }
 
-    public class ServerMessage
-    {
-        public string message;
-    }
-
-    void SendAuthRequest()
+    void CreateSession()
     {
         EnableInputs(false);
         _authButton.text = "Authenticating...";
@@ -99,6 +99,7 @@ public class LoginEvents : MonoBehaviour
             PlayerPrefs.SetString("authToken", res.token);
             PlayerPrefs.SetString("playerJson", JsonConvert.SerializeObject(res));
             _error.style.display = DisplayStyle.None;
+            loadLocation = res.location ?? "Hills";
             StartCoroutine(LoadPrototype());
         }).Catch((err) =>
         {
@@ -106,8 +107,8 @@ public class LoginEvents : MonoBehaviour
             if (error.IsNetworkError) _error.text = "Connection error";
             if (error.IsHttpError)
             {
-                ServerMessage sm = JsonConvert.DeserializeObject<ServerMessage>(error.Response);
-                _error.text = sm.message;
+                ServerError se = JsonConvert.DeserializeObject<ServerError>(error.Response);
+                _error.text = se.message;
             }
             _error.style.display = DisplayStyle.Flex;
         }).Finally(() =>
@@ -116,6 +117,12 @@ public class LoginEvents : MonoBehaviour
             EnableInputs(true);
         });
     }
+
+    void HandleButton(ChangeEvent<string> evt)
+    {
+        _authButton.SetEnabled(_loginInput.value.Length > 0 && _passwordInput.value.Length > 0);
+    }
+
 
     void EnableInputs(bool enable)
     {
@@ -129,7 +136,7 @@ public class LoginEvents : MonoBehaviour
         _form.style.display = DisplayStyle.None;
         _loading.style.display = DisplayStyle.Flex;
         yield return new WaitForSeconds(1);
-        AsyncOperation async = SceneManager.LoadSceneAsync("World");
+        AsyncOperation async = SceneManager.LoadSceneAsync(loadLocation);
         async.allowSceneActivation = false;
 
         while (async.isDone == false)

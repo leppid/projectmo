@@ -18,7 +18,7 @@ public class WorldEvents : MonoBehaviour
     private Button _menuButton;
     private VisualElement _menuBlock;
     private Button _logoutButton;
-    public bool IsMenuOpen = false;
+    private bool IsMenuOpen = false;
 
     private void Awake()
     {
@@ -42,42 +42,71 @@ public class WorldEvents : MonoBehaviour
     {
         _loadingBlock.style.display = DisplayStyle.None;
         _mainBlock.style.display = DisplayStyle.Flex;
-        _logoutButton.clicked += LogoutPressed;
-        _menuButton.clicked += MenuPressed;
-        _compassButton.clicked += CompassPressed;
-        _actionButton.clicked += ActionPressed;
-        _messageBlock.clicked += MessagePressed;
-        ShowBottomBar();
-        ShowCompass();
+        _logoutButton.clicked += StartLogout;
+        _menuButton.clicked += HandleMenu;
+        _compassButton.clicked += ResetCompass;
+        _actionButton.clicked += HandleAction;
+        _messageBlock.clicked += CloseMessage;
+        DisplayBottomBar(true);
+        DisplayCompass(true);
     }
 
-    public void ShowBottomBar()
+    public void DisplayBottomBar(bool show = true)
     {
-        StartCoroutine(ShowBottomBarEnum());
+        if (show)
+        {
+            StartCoroutine(ShowBottomBarEnum());
+        }
+        else
+        {
+            StartCoroutine(HideBottomBarEnum());
+        }
     }
 
-    public IEnumerator ShowBottomBarEnum()
+    private IEnumerator ShowBottomBarEnum()
     {
         yield return new WaitForSeconds(.2f);
         _bottomBar.style.bottom = 0f;
     }
 
-    public void HideBottomBar()
+    private IEnumerator HideBottomBarEnum()
     {
+        DisplayMenu(false);
+        yield return new WaitForSeconds(.2f);
         _bottomBar.style.bottom = -220f;
+    }
 
-        if (IsMenuOpen)
+    public void HandleMenu()
+    {
+        DisplayMenu(!IsMenuOpen);
+    }
+
+    public void DisplayMenu(bool show = true)
+    {
+        if (show)
         {
-            StartCoroutine(MenuPressedEnum());
+
+            StartCoroutine(ShowMenuBlockEnum());
+        }
+        else
+        {
+            StartCoroutine(HideMenuBlockEnum());
         }
     }
 
-    private void MenuPressed()
+    private IEnumerator ShowMenuBlockEnum()
     {
-        StartCoroutine(MenuPressedEnum());
+        if (!IsMenuOpen)
+        {
+            IsMenuOpen = true;
+            _menuBlock.style.display = DisplayStyle.Flex;
+            _menuBlock.style.bottom = 220f;
+            _menuButton.AddToClassList("menu-button-active");
+            yield return null;
+        }
     }
 
-    IEnumerator MenuPressedEnum()
+    private IEnumerator HideMenuBlockEnum()
     {
         if (IsMenuOpen)
         {
@@ -88,36 +117,32 @@ public class WorldEvents : MonoBehaviour
             _menuButton.RemoveFromClassList("menu-button-active");
 
         }
+    }
+
+    public void DisplayCompass(bool show = true)
+    {
+        if (show)
+        {
+            StartCoroutine(ShowCompassEnum());
+        }
         else
         {
-            IsMenuOpen = true;
-            _menuBlock.style.display = DisplayStyle.Flex;
-            _menuBlock.style.bottom = 220f;
-            _menuButton.AddToClassList("menu-button-active");
+            StartCoroutine(HideCompassEnum());
         }
     }
 
-    public void ShowCompass()
-    {
-        StartCoroutine(ShowCompassEnum());
-    }
-
-    public IEnumerator ShowCompassEnum()
+    private IEnumerator ShowCompassEnum()
     {
         _compassBlock.style.display = DisplayStyle.Flex;
         yield return new WaitForSeconds(.1f);
         _compassBlock.style.top = 0f;
+
     }
 
-    public void HideCompass()
-    {
-        StartCoroutine(HideCompassEnum());
-    }
-
-    public IEnumerator HideCompassEnum()
+    private IEnumerator HideCompassEnum()
     {
         _compassBlock.style.top = -500f;
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(.3f);
         _compassBlock.style.display = DisplayStyle.None;
     }
 
@@ -126,21 +151,23 @@ public class WorldEvents : MonoBehaviour
         _compassBlock.transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
-    public void CompassPressed()
+    public void ResetCompass()
     {
-        UiManager.instance.ResetCompass();
+        UIManager.instance.ResetCompass();
     }
 
-    private void LogoutPressed()
+    public void StartLogout()
     {
         _mainBlock.style.display = DisplayStyle.None;
         _loadingBlock.style.display = DisplayStyle.Flex;
-        PlayerPrefs.DeleteAll();
+
+        PlayerManager.instance.SaveLastPosition();
         PlayerPrefs.SetString("IsLogOut", "true");
+
         StartCoroutine(LoadLogin());
     }
 
-    public IEnumerator LoadLogin()
+    private IEnumerator LoadLogin()
     {
         yield return new WaitForSeconds(1);
         AsyncOperation async = SceneManager.LoadSceneAsync("Login");
@@ -169,7 +196,7 @@ public class WorldEvents : MonoBehaviour
         actionData = null;
     }
 
-    public void ActionPressed()
+    public void HandleAction()
     {
         if (actionData != null)
         {
@@ -190,11 +217,28 @@ public class WorldEvents : MonoBehaviour
         if (actionData.location.message != null)
         {
             _messageBlock.text = actionData.location.message;
-            StartCoroutine(DisplayMessageEnum());
+            StartCoroutine(ShowMessageEnum());
         }
     }
 
-    private IEnumerator DisplayMessageEnum()
+    public void CloseMessage()
+    {
+        DisplayMessage(false);
+    }
+
+    public void DisplayMessage(bool show = true)
+    {
+        if (show)
+        {
+            StartCoroutine(ShowMessageEnum());
+        }
+        else
+        {
+            StartCoroutine(HideMessageEnum());
+        }
+    }
+
+    private IEnumerator ShowMessageEnum()
     {
         _actionButton.style.display = DisplayStyle.None;
         _messageBlock.style.display = DisplayStyle.Flex;
@@ -202,9 +246,10 @@ public class WorldEvents : MonoBehaviour
         _messageBlock.style.display = DisplayStyle.None;
     }
 
-    private void MessagePressed()
+    private IEnumerator HideMessageEnum()
     {
         _messageBlock.style.display = DisplayStyle.None;
+        yield return null;
         StopAllCoroutines();
     }
 

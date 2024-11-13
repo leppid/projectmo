@@ -1,11 +1,11 @@
 using UnityEngine;
 using ProjectModels;
 
-public class UiManager : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
-    public static UiManager instance;
-    public GameObject _UI;
-    public CameraController _camera;
+    public static UIManager instance;
+    public WorldEvents _interfaceWorld;
+    public CameraWorld _cameraWorld;
 
     public void Awake()
     {
@@ -20,42 +20,39 @@ public class UiManager : MonoBehaviour
 
     public void Update()
     {
-        _UI.GetComponent<WorldEvents>().RotateCompass(-Camera.main.transform.eulerAngles.y);
+        RotateCompassByCamera();
     }
 
-    public void ShowBottomBar()
+    public void DisplayBottomBar(bool show = true)
     {
-        _UI.GetComponent<WorldEvents>().ShowBottomBar();
+        _interfaceWorld.DisplayBottomBar(show);
     }
 
-    public void HideBottomBar()
+    public void DisplayCompass(bool show = true)
     {
-        _UI.GetComponent<WorldEvents>().HideBottomBar();
+        _interfaceWorld.DisplayCompass(show);
     }
 
-    public void ShowCompass()
+    public void RotateCompassByCamera()
     {
-        _UI.GetComponent<WorldEvents>().ShowCompass();
-    }
-
-    public void HideCompass()
-    {
-        _UI.GetComponent<WorldEvents>().HideCompass();
+        _interfaceWorld.RotateCompass(-_cameraWorld.transform.eulerAngles.y);
     }
 
     public void ResetCompass()
     {
-        _camera.Reset();
+        _cameraWorld.Reset();
     }
 
     public void SetActionData(ActionData data)
     {
-        _UI.GetComponent<WorldEvents>().SetActionData(data);
+
+        _interfaceWorld.SetActionData(data);
     }
 
     public void ClearActionData()
     {
-        _UI.GetComponent<WorldEvents>().ClearActionData();
+
+        _interfaceWorld.ClearActionData();
     }
 }
 

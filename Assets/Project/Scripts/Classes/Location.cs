@@ -19,7 +19,7 @@ public class Location : MonoBehaviour
     {
         if (collision.gameObject.tag.Equals("Player"))
         {
-            UiManager.instance.SetActionData(actionData);
+            UIManager.instance.SetActionData(actionData);
         }
     }
 
@@ -27,7 +27,7 @@ public class Location : MonoBehaviour
     {
         if (collision.gameObject.tag.Equals("Player"))
         {
-           UiManager.instance.ClearActionData();
+           UIManager.instance.ClearActionData();
         }
     }
 }
