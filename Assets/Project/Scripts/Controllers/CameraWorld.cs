@@ -12,7 +12,6 @@ public class CameraWorld : MonoBehaviour
 
     void Start()
     {
-        Application.targetFrameRate = 120;
         cameraOffset = transform.position - targetObject.position;
         initialCameraOffset = cameraOffset;
     }

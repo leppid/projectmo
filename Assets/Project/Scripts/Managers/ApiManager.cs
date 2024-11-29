@@ -20,30 +20,37 @@ public class ApiManager : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
     }
-    
+
     private readonly string basePath = "http://91.202.145.155:3000/";
-    private RequestHelper currentRequest;
+    private RequestHelper currentRequest = new()
+    {
+        EnableDebug = false,
+        Timeout = 5
+    };
 
     public Promise<T> Get<T>(string path, int id = 0)
     {
         SetAuthorizationHeader();
 
+
         if (id != 0)
-            return (Promise<T>)RestClient.Get<T>(basePath + path + "/" + id);
+        {
+            currentRequest.Uri = basePath + path + "/" + id;
+            return (Promise<T>)RestClient.Get<T>(currentRequest);
+        }
         else
-            return (Promise<T>)RestClient.Get<T>(basePath + path);
+        {
+            currentRequest.Uri = basePath + path;
+            return (Promise<T>)RestClient.Get<T>(currentRequest);
+        }
     }
 
     public Promise<T> Post<T>(string path, object body)
     {
         SetAuthorizationHeader();
 
-        currentRequest = new RequestHelper
-        {
-            Uri = basePath + path,
-            Body = body,
-            EnableDebug = false
-        };
+        currentRequest.Uri = basePath + path;
+        currentRequest.Body = body;
 
         return (Promise<T>)RestClient.Post<T>(currentRequest);
     }
@@ -52,16 +59,13 @@ public class ApiManager : MonoBehaviour
     {
         SetAuthorizationHeader();
 
-        currentRequest = new RequestHelper
+        currentRequest.Uri = basePath + path;
+        currentRequest.Body = body;
+        currentRequest.Retries = 5;
+        currentRequest.RetrySecondsDelay = 1;
+        currentRequest.RetryCallback = (err, retries) =>
         {
-            Uri = basePath + path,
-            Body = body,
-            Retries = 5,
-            RetrySecondsDelay = 1,
-            RetryCallback = (err, retries) =>
-            {
-                Debug.Log(string.Format("Retry #{0} Status {1}\nError: {2}", retries, err.StatusCode, err));
-            }
+            Debug.Log(string.Format("Retry #{0} Status {1}\nError: {2}", retries, err.StatusCode, err));
         };
 
         return (Promise<T>)RestClient.Put<T>(currentRequest);
@@ -71,7 +75,9 @@ public class ApiManager : MonoBehaviour
     {
         SetAuthorizationHeader();
 
-        return (Promise<T>)RestClient.Delete(basePath + path);
+        currentRequest.Uri = basePath + path;
+
+        return (Promise<T>)RestClient.Delete(currentRequest);
     }
 
     public void AbortRequest()

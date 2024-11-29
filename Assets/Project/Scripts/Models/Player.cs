@@ -8,6 +8,12 @@ namespace ProjectModels
         public string location;
         public string position;
         public string token;
+        public Meta meta;
+
+        public class Meta
+        {
+            public string token;
+        }
     }
 
     public class PlayerSessionParams

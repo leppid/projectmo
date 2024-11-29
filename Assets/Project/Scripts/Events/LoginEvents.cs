@@ -21,6 +21,7 @@ public class LoginEvents : MonoBehaviour
 
     void Awake()
     {
+        Application.targetFrameRate = 120;
         uiDoc = GetComponent<UIDocument>();
         _logoButton = uiDoc.rootVisualElement.Q<Button>("Logo");
         _logoButton.clicked += LogoPressed;

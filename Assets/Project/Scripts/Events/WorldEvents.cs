@@ -19,8 +19,8 @@ public class WorldEvents : MonoBehaviour
     private Button _menuButton;
     private Button _inventoryButton;
     private VisualElement _menuBlock;
-    private VisualElement _inventoryBlock;
     private Button _logoutButton;
+    private GameObject _inventoryObject;
 
     private void Awake()
     {
@@ -35,8 +35,8 @@ public class WorldEvents : MonoBehaviour
         _menuButton = uiDoc.rootVisualElement.Q<Button>("MenuButton");
         _inventoryButton = uiDoc.rootVisualElement.Q<Button>("InventoryButton");
         _menuBlock = uiDoc.rootVisualElement.Q<VisualElement>("MenuBlock");
-        _inventoryBlock = uiDoc.rootVisualElement.Q<VisualElement>("InventoryBlock");
         _logoutButton = uiDoc.rootVisualElement.Q<Button>("LogoutButton");
+        _inventoryObject = transform.parent.GetChild(1).gameObject;
 
         _bottomBar.style.bottom = -220f;
         _compassBlock.style.top = -500f;
@@ -155,8 +155,8 @@ public class WorldEvents : MonoBehaviour
         {
             IsInventoryOpen = true;
             _inventoryButton.AddToClassList("menu-button-active");
-            _inventoryBlock.style.display = DisplayStyle.Flex;
-            _inventoryBlock.style.opacity = 0.99f;
+            _inventoryObject.SetActive(true);
+            DisplayCompass(false);
             yield return null;
         }
     }
@@ -166,9 +166,11 @@ public class WorldEvents : MonoBehaviour
         if (IsInventoryOpen)
         {
             IsInventoryOpen = false;
-            _inventoryBlock.style.opacity = 0;
+            DisplayCompass(true);
+            _inventoryObject.GetComponent<Animator>().Play("InventoryClose");
             yield return new WaitForSeconds(0.3f);
-            _inventoryBlock.style.display = DisplayStyle.None;
+            InventoryManager.instance.ResetPages();
+            _inventoryObject.SetActive(false);
             _inventoryButton.RemoveFromClassList("menu-button-active");
             IsInventoryOpen = false;
 
