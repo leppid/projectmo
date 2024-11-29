@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using ProjectModels;
+using UnityEngine.XR;
 
 public class WorldEvents : MonoBehaviour
 {
@@ -16,9 +17,10 @@ public class WorldEvents : MonoBehaviour
     private Button _compassButton;
     private VisualElement _bottomBar;
     private Button _menuButton;
+    private Button _inventoryButton;
     private VisualElement _menuBlock;
+    private VisualElement _inventoryBlock;
     private Button _logoutButton;
-    private bool IsMenuOpen = false;
 
     private void Awake()
     {
@@ -31,7 +33,9 @@ public class WorldEvents : MonoBehaviour
         _actionButton = uiDoc.rootVisualElement.Q<Button>("ActionButton");
         _bottomBar = uiDoc.rootVisualElement.Q<VisualElement>("BottomBar");
         _menuButton = uiDoc.rootVisualElement.Q<Button>("MenuButton");
+        _inventoryButton = uiDoc.rootVisualElement.Q<Button>("InventoryButton");
         _menuBlock = uiDoc.rootVisualElement.Q<VisualElement>("MenuBlock");
+        _inventoryBlock = uiDoc.rootVisualElement.Q<VisualElement>("InventoryBlock");
         _logoutButton = uiDoc.rootVisualElement.Q<Button>("LogoutButton");
 
         _bottomBar.style.bottom = -220f;
@@ -44,12 +48,14 @@ public class WorldEvents : MonoBehaviour
         _mainBlock.style.display = DisplayStyle.Flex;
         _logoutButton.clicked += StartLogout;
         _menuButton.clicked += HandleMenu;
+        _inventoryButton.clicked += HandleInventory;
         _compassButton.clicked += ResetCompass;
         _actionButton.clicked += HandleAction;
         _messageBlock.clicked += CloseMessage;
         DisplayBottomBar(true);
         DisplayCompass(true);
     }
+
 
     public void DisplayBottomBar(bool show = true)
     {
@@ -76,8 +82,11 @@ public class WorldEvents : MonoBehaviour
         _bottomBar.style.bottom = -220f;
     }
 
+    private bool IsMenuOpen = false;
+
     public void HandleMenu()
     {
+        if (IsInventoryOpen) HandleInventory();
         DisplayMenu(!IsMenuOpen);
     }
 
@@ -115,6 +124,53 @@ public class WorldEvents : MonoBehaviour
             yield return new WaitForSeconds(.2f);
             _menuBlock.style.display = DisplayStyle.None;
             _menuButton.RemoveFromClassList("menu-button-active");
+
+        }
+    }
+
+    private bool IsInventoryOpen = false;
+
+    public void HandleInventory()
+    {
+        if (IsMenuOpen) HandleMenu();
+        DisplayInventory(!IsInventoryOpen);
+    }
+
+    public void DisplayInventory(bool show = true)
+    {
+        if (show)
+        {
+
+            StartCoroutine(ShowInventoryBlockEnum());
+        }
+        else
+        {
+            StartCoroutine(HideInventoryBlockEnum());
+        }
+    }
+
+    private IEnumerator ShowInventoryBlockEnum()
+    {
+        if (!IsInventoryOpen)
+        {
+            IsInventoryOpen = true;
+            _inventoryButton.AddToClassList("menu-button-active");
+            _inventoryBlock.style.display = DisplayStyle.Flex;
+            _inventoryBlock.style.opacity = 0.99f;
+            yield return null;
+        }
+    }
+
+    private IEnumerator HideInventoryBlockEnum()
+    {
+        if (IsInventoryOpen)
+        {
+            IsInventoryOpen = false;
+            _inventoryBlock.style.opacity = 0;
+            yield return new WaitForSeconds(0.3f);
+            _inventoryBlock.style.display = DisplayStyle.None;
+            _inventoryButton.RemoveFromClassList("menu-button-active");
+            IsInventoryOpen = false;
 
         }
     }
