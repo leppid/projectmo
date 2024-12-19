@@ -1,13 +1,13 @@
-using System.Net.Sockets;
 using ProjectModels;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
     private Transform _items;
+    private Transform _hoverSwipeUp;
+    private Transform _hoverSwipeDown;
     private Transform _pages;
     private Transform _slots;
     private Vector3 slotsInitialPosition;
@@ -16,11 +16,7 @@ public class InventoryManager : MonoBehaviour
     public int pageCount = 1;
     private int currentPage = 1;
     private bool animatePageSwitch = false;
-
-    public bool isMoving = false;
-    public bool iconsShown = false;
-    public InventorySlot moveFrom;
-    public InventorySlot moveTo;
+    public bool isDragging = false;
 
     public void Awake()
     {
@@ -32,9 +28,13 @@ public class InventoryManager : MonoBehaviour
             return;
         }
 
-        _items = transform.GetChild(0).GetChild(1);
-        _pages = _items.GetChild(0);
-        _slots = _items.GetChild(1).GetChild(0);
+        _items = transform.GetChild(0).Find("Items");
+        _hoverSwipeDown = _items.Find("HoverSwipeDown");
+        _hoverSwipeUp = _items.Find("HoverSwipeUp");
+        _hoverSwipeDown.gameObject.SetActive(false);
+        _hoverSwipeUp.gameObject.SetActive(false);
+        _pages = _items.Find("Pages");
+        _slots = _items.Find("Slots").Find("Content");
         slotsInitialPosition = _slots.localPosition;
         slotsPosition = slotsInitialPosition;
         pageCount = _slots.childCount / 12;
@@ -56,34 +56,24 @@ public class InventoryManager : MonoBehaviour
                 animatePageSwitch = false;
             }
         };
-
-        if (moveFrom)
-        {
-            isMoving = true;
-            moveFrom.transform.localScale = Vector3.one * 0.9f;
-            ShowMoveIcons(true);
-        }
-
-        if (moveFrom && moveTo)
-        {
-            MoveItem();
-            isMoving = false;
-        }
     }
 
     public void Start()
     {
-        ArmorData armorData = new() { id = "123", name = "shapka" };
-        InventoryItem invItem = new() { armorData = armorData, type = "armor" };
-        _slots.GetChild(0).GetComponent<InventorySlot>().SetItem(invItem);
-        ArmorData armorData2 = new() { id = "1233", name = "shapka2" };
-        InventoryItem invItem2 = new() { armorData = armorData2, type = "armor" };
-        _slots.GetChild(3).GetComponent<InventorySlot>().SetItem(invItem2);
+        ArmorData armorData = new() { id = "123", name = "shapka", type = "Armor::Head" };
+        _slots.GetChild(0).GetComponent<InventorySlot>().SpawnItem(armorData);
+        ArmorData armorData2 = new() { id = "1233", name = "shapka2", type = "Armor::Head" };
+        _slots.GetChild(3).GetComponent<InventorySlot>().SpawnItem(armorData2);
     }
 
     public void OnSwipeUp()
     {
-        if (currentPage == pageCount) return;
+        NextPage();
+    }
+
+    public void NextPage(bool force = false)
+    {
+        if ((currentPage == pageCount) || (!force && isDragging)) return;
         currentPage++;
         UpdatePageCounter();
         slotsPosition = new Vector3(_slots.localPosition.x, _slots.localPosition.y + 930f, _slots.localPosition.z);
@@ -93,7 +83,12 @@ public class InventoryManager : MonoBehaviour
 
     public void OnSwipeDown()
     {
-        if (currentPage == 1) return;
+        PrevPage();
+    }
+
+    public void PrevPage(bool force = false)
+    {
+        if ((currentPage == 1) || (!force && isDragging)) return;
         currentPage--;
         UpdatePageCounter();
         slotsPosition = new Vector3(_slots.localPosition.x, _slots.localPosition.y - 930f, _slots.localPosition.z);
@@ -114,62 +109,10 @@ public class InventoryManager : MonoBehaviour
         UpdatePageCounter();
     }
 
-    public void MoveItem()
+    public void EnableHoverSwipers(bool enable)
     {
-        moveFrom.transform.localScale = Vector3.one;
-        ShowMoveIcons(false);
-
-        if (moveFrom == moveTo)
-        {
-            ResetMovement();
-            return;
-        };
-
-        if (moveFrom.content.childCount > 0 && moveTo.content.childCount == 0)
-        {
-            moveFrom.content.GetChild(0).SetParent(moveTo.content.transform);
-        }
-        else
-        {
-            moveFrom.content.GetChild(0).SetParent(moveTo.content.transform);
-            moveTo.content.GetChild(0).SetParent(moveFrom.content.transform);
-        }
-
-        ResetMovement();
+      _hoverSwipeDown.gameObject.SetActive(enable);
+      _hoverSwipeUp.gameObject.SetActive(enable);
     }
-
-    public void ResetMovement()
-    {
-        moveFrom = null;
-        moveTo = null;
-        isMoving = false;
-        ShowMoveIcons(false);
-    }
-
-    public void ShowMoveIcons(bool show = true)
-    {
-        iconsShown = show;
-        for (int i = 0; i < _slots.childCount; i++)
-        {
-            InventorySlot slot = _slots.GetChild(i).GetComponent<InventorySlot>();
-            if (show)
-            {
-                if (slot.content.childCount > 0)
-                {
-                    if (slot != moveFrom) slot.moveIcon.gameObject.SetActive(true);
-                }
-                else
-                {
-                    if (slot != moveFrom) slot.replaceIcon.gameObject.SetActive(true);
-                }
-            }
-            else
-            {
-                slot.moveIcon.gameObject.SetActive(false);
-                slot.replaceIcon.gameObject.SetActive(false);
-            }
-        }
-    }
-
 }
 

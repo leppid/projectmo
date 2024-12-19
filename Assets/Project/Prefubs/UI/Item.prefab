@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 3532865082443950898}
   - component: {fileID: 2344887370618803832}
   - component: {fileID: 5157820250631641995}
-  - component: {fileID: 8853283192376367307}
+  - component: {fileID: 8184599397358896268}
   m_Layer: 5
   m_Name: Item
   m_TagString: Untagged
@@ -213,7 +213,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.1
---- !u!114 &8853283192376367307
+--- !u!114 &8184599397358896268
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -222,7 +222,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 6705130111391128080}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e7baf167aa997a4a90728b71066f0ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 235fbdef7ece3f146ace60b3c6fec3e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 
+  slot: {fileID: 0}
+  type: 0
