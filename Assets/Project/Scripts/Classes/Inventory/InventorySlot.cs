@@ -59,12 +59,19 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     {
         longPressStarted = false;
         longPressTime = 0;
+
+        if (item != null && item.dragPressed)
+            item.DragPressed(false);
     }
 
     public void OnLongPress()
     {
         longPressStarted = false;
         longPress = true;
+
+        if (item != null && !item.dragPressed && !item.isDragging)
+            item.DragPressed(true);
+
     }
 
     public void OnDrop(PointerEventData eventData)

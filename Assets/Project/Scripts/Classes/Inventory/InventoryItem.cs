@@ -14,7 +14,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public ItemType type;
     private TextMeshProUGUI title;
     private Image image;
-    private bool isDragging = false;
+    public bool dragPressed = false;
+    public bool isDragging = false;
 
     void Awake()
     {
@@ -31,33 +32,47 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
     }
 
+    public void DragPressed(bool enable)
+    {
+        transform.SetParent(slot.transform);
+        dragPressed = enable;
+        transform.localScale = Vector3.one * (enable ? 1.1f : 1f);
+
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
-        transform.SetParent(slot.transform.parent.parent.parent.parent);
-        transform.SetAsFirstSibling();
-        image.raycastTarget = false;
+        if (!dragPressed) return;
+
+        dragPressed = false;
         isDragging = true;
         InventoryManager.instance.isDragging = true;
         InventoryManager.instance.EnableHoverSwipers(true);
-
+        transform.SetParent(slot.transform.parent.parent.parent.parent);
+        transform.SetAsFirstSibling();
+        image.raycastTarget = false;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (!isDragging) return;
+
         transform.position = Vector2.Lerp(transform.position, eventData.position, 0.3f);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!isDragging) return;
+
         StartCoroutine(OnEndDragEnum());
     }
 
-    public IEnumerator OnEndDragEnum()
+    IEnumerator OnEndDragEnum()
     {
-        transform.SetParent(slot.transform);
         isDragging = false;
-        yield return new WaitForSeconds(0.1f);
+        DragPressed(false);
         image.raycastTarget = true;
+        yield return new WaitForSeconds(0.1f);
         InventoryManager.instance.isDragging = false;
         InventoryManager.instance.EnableHoverSwipers(false);
     }
