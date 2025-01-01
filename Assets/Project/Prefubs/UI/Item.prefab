@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4014003731195807589}
   - component: {fileID: 7617142778119522542}
   - component: {fileID: 27647362421706255}
+  - component: {fileID: 5509996864612194585}
   m_Layer: 5
   m_Name: name
   m_TagString: Untagged
@@ -92,8 +93,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -136,6 +137,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!225 &5509996864612194585
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5480893409636283859}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &6705130111391128080
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,6 +161,7 @@ GameObject:
   - component: {fileID: 2344887370618803832}
   - component: {fileID: 5157820250631641995}
   - component: {fileID: 8184599397358896268}
+  - component: {fileID: 7524698847884236419}
   m_Layer: 5
   m_Name: Item
   m_TagString: Untagged
@@ -196,7 +210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.03671646, g: 0, b: 1, a: 0.1764706}
+  m_Color: {r: 0.15686275, g: 0.17254902, b: 0.3882353, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -226,4 +240,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: {fileID: 0}
+  item:
+    id: 
+    name: 
+    type: 
+    index: 
   type: 0
+  dragPressed: 0
+  isDragging: 0
+--- !u!225 &7524698847884236419
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6705130111391128080}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

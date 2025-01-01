@@ -8,12 +8,8 @@ namespace ProjectModels
         public string location;
         public string position;
         public string token;
-        public Meta meta;
-
-        public class Meta
-        {
-            public string token;
-        }
+        public int bagPages;
+        public bool isGuest = false;
     }
 
     public class PlayerSessionParams
@@ -26,5 +22,10 @@ namespace ProjectModels
     {
         public string location;
         public string position;
+    }
+
+    public class InventorySyncParams
+    {
+        public ItemData[] data;
     }
 }

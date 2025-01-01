@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 using Newtonsoft.Json;
 using ProjectModels;
 using Proyecto26;
+using System;
 
 public class LoginEvents : MonoBehaviour
 {
@@ -39,6 +40,8 @@ public class LoginEvents : MonoBehaviour
     void Start()
     {
         PlayerPrefs.DeleteKey("playerJson");
+        PlayerPrefs.DeleteKey("guestJson");
+        PlayerPrefs.DeleteKey("inventoryJson");
 
         if (PlayerPrefs.GetString("IsLogOut") == "true")
         {
@@ -52,6 +55,8 @@ public class LoginEvents : MonoBehaviour
 
     void FetchSession()
     {
+        if (PlayerPrefs.GetString("authToken", "null") == "null") return;
+
         _form.style.display = DisplayStyle.None;
         _loading.style.display = DisplayStyle.Flex;
 
@@ -77,6 +82,8 @@ public class LoginEvents : MonoBehaviour
         else
         {
             logoClickedTimes = 0;
+            PlayerData guest = new() { displayName = "Guest", id = "-1", token = "none", location = "Hills", position = "(250.34, 0.57, 250.84)", bagPages = 1 };
+            PlayerPrefs.SetString("guestJson", JsonConvert.SerializeObject(guest));
             StartCoroutine(LoadPrototype());
         }
     }

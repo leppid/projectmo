@@ -1,9 +1,13 @@
+using System;
+
 namespace ProjectModels
 {
-    public class ArmorData
+    [Serializable]
+    public class ItemData
     {
         public string id;
         public string name;
         public string type;
+        public string index;
     }
 }

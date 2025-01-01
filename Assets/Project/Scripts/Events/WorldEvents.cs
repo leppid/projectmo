@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using ProjectModels;
 using UnityEngine.XR;
+using Newtonsoft.Json;
 
 public class WorldEvents : MonoBehaviour
 {
@@ -36,7 +37,7 @@ public class WorldEvents : MonoBehaviour
         _inventoryButton = uiDoc.rootVisualElement.Q<Button>("InventoryButton");
         _menuBlock = uiDoc.rootVisualElement.Q<VisualElement>("MenuBlock");
         _logoutButton = uiDoc.rootVisualElement.Q<Button>("LogoutButton");
-        _inventoryObject = transform.parent.GetChild(1).gameObject;
+        _inventoryObject = GameObject.Find("InterfaceWorld").transform.Find("Canvas").Find("Inventory").gameObject;
 
         _bottomBar.style.bottom = -220f;
         _compassBlock.style.top = -500f;
@@ -140,7 +141,6 @@ public class WorldEvents : MonoBehaviour
     {
         if (show)
         {
-
             StartCoroutine(ShowInventoryBlockEnum());
         }
         else
@@ -156,6 +156,7 @@ public class WorldEvents : MonoBehaviour
             IsInventoryOpen = true;
             _inventoryButton.AddToClassList("menu-button-active");
             _inventoryObject.SetActive(true);
+            PlayerManager.instance._playerWorld.GetComponent<Animator>().Play("SpotLightOn");
             DisplayCompass(false);
             yield return null;
         }
@@ -168,6 +169,7 @@ public class WorldEvents : MonoBehaviour
             IsInventoryOpen = false;
             DisplayCompass(true);
             _inventoryObject.GetComponent<Animator>().Play("InventoryClose");
+            PlayerManager.instance._playerWorld.GetComponent<Animator>().Play("SpotLightOff");
             yield return new WaitForSeconds(0.3f);
             InventoryManager.instance.ResetPages();
             _inventoryObject.SetActive(false);
@@ -216,9 +218,11 @@ public class WorldEvents : MonoBehaviour
 
     public void StartLogout()
     {
+        DisplayCompass(false);
         _mainBlock.style.display = DisplayStyle.None;
         _loadingBlock.style.display = DisplayStyle.Flex;
 
+        InventoryManager.instance.SyncInventory();
         PlayerManager.instance.SaveLastPosition();
         PlayerPrefs.SetString("IsLogOut", "true");
 
@@ -298,6 +302,7 @@ public class WorldEvents : MonoBehaviour
 
     private IEnumerator ShowMessageEnum()
     {
+        InventoryManager.instance.SyncInventory();
         _actionButton.style.display = DisplayStyle.None;
         _messageBlock.style.display = DisplayStyle.Flex;
         yield return new WaitForSeconds(5f);

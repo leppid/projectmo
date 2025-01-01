@@ -5,7 +5,7 @@ public class SwipeDetector : MonoBehaviour
     private Vector2 fingerDown;
     private Vector2 fingerUp;
     public bool detectSwipeOnlyAfterRelease = false;
-    public float SWIPE_THRESHOLD = 20f;
+    public float SWIPE_THRESHOLD = 1f;
 
     public delegate void SwiperDelegate();
     public SwiperDelegate OnSwipeLeftD;

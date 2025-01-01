@@ -1,6 +1,9 @@
 using UnityEngine;
 using Proyecto26;
 using RSG;
+using System;
+using ProjectModels;
+using System.Linq;
 
 public class ApiManager : MonoBehaviour
 {
@@ -22,16 +25,11 @@ public class ApiManager : MonoBehaviour
     }
 
     private readonly string basePath = "http://91.202.145.155:3000/";
-    private RequestHelper currentRequest = new()
-    {
-        EnableDebug = false,
-        Timeout = 5
-    };
+    private RequestHelper currentRequest;
 
     public Promise<T> Get<T>(string path, int id = 0)
     {
         SetAuthorizationHeader();
-
 
         if (id != 0)
         {
@@ -43,6 +41,28 @@ public class ApiManager : MonoBehaviour
             currentRequest.Uri = basePath + path;
             return (Promise<T>)RestClient.Get<T>(currentRequest);
         }
+    }
+
+    public Promise<T[]> GetArray<T>(string path, int id = 0)
+    {
+        SetAuthorizationHeader();
+
+        if (id != 0)
+        {
+            currentRequest.Uri = basePath + path + "/" + id;
+            return (Promise<T[]>)RestClient.GetArray<T>(currentRequest);
+        }
+        else
+        {
+            currentRequest.Uri = basePath + path;
+            return (Promise<T[]>)RestClient.GetArray<T>(currentRequest);
+        }
+    }
+
+    public void GetInventory(string path)
+    {
+        currentRequest.Uri = basePath + path;
+        RestClient.GetArray<ItemData>(currentRequest).Then(res => { Debug.Log(res); });
     }
 
     public Promise<T> Post<T>(string path, object body)
@@ -91,8 +111,18 @@ public class ApiManager : MonoBehaviour
 
     private void SetAuthorizationHeader()
     {
+        ResetCurrentRequest();
         string token = "Bearer " + PlayerPrefs.GetString("authToken", "none");
         RestClient.DefaultRequestHeaders["Authorization"] = token;
+    }
+
+    private void ResetCurrentRequest()
+    {
+        currentRequest = new()
+        {
+            EnableDebug = true,
+            Timeout = 5
+        };
     }
 }
 

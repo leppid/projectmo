@@ -61,7 +61,7 @@ public class PlayerWorld : MonoBehaviour
                 movingSeconds = 0;
             }
         }
-
+        
         _nickname.transform.rotation = Camera.main.transform.rotation;
     }
 

@@ -8,7 +8,7 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager instance;
     public PlayerWorld _playerWorld;
     public CameraWorld _cameraWorld;
-    public PlayerData PlayerData;
+    public PlayerData PlayerData = new() { displayName = "Guest", id = "-1", token = "none", location = "Hills", position = "(250.34, 0.57, 250.84)", bagPages = 1 };
 
     public void Awake()
     {
@@ -26,17 +26,46 @@ public class PlayerManager : MonoBehaviour
         if (_cameraWorld == null)
             _cameraWorld = GameObject.Find("MainCamera").GetComponent<CameraWorld>();
 
-        FetchPlayerData();
+        SetPrefsData();
         RestoreLastPosition();
-        UpdateNickname(PlayerData.displayName);
+        _playerWorld.UpdateNickname(PlayerData.displayName);
     }
 
-    public void FetchPlayerData()
+    public void SetPrefsData()
     {
-        if (PlayerPrefs.GetString("playerJson", "null") != "null")
-            PlayerData = JsonConvert.DeserializeObject<PlayerData>(PlayerPrefs.GetString("playerJson"));
-        else
-            PlayerData = new PlayerData { displayName = "Guest", id = "-1", token = "none", location = "Hills", position = "(250.34, 0.57, 250.84)" };
+        string guestDataString = PlayerPrefs.GetString("guestJson", "null");
+        string playerDataString = PlayerPrefs.GetString("playerJson", "null");
+
+        if (playerDataString != "null")
+        {
+            PlayerData = JsonConvert.DeserializeObject<PlayerData>(playerDataString);
+        }
+        else if (guestDataString != "null")
+        {
+            PlayerData = JsonConvert.DeserializeObject<PlayerData>(guestDataString);
+        }
+    }
+
+    public void FetchPlayer()
+    {
+        if (PlayerPrefs.GetString("authToken", "null") == "null") return;
+
+        ApiManager.instance.Get<PlayerData>("session")
+        .Then(res =>
+        {
+            PlayerData = res;
+            PlayerPrefs.SetString("playerJson", JsonConvert.SerializeObject(res));
+        });
+    }
+
+    public void SaveLastPosition()
+    {
+        if (PlayerPrefs.GetString("authToken", "null") == "null") return;
+
+        string playerPos = _playerWorld.transform.position.ToString();
+        string playerLoc = SceneManager.GetActiveScene().name;
+
+        ApiManager.instance.Post<PlayerData>("sync_position", new PlayerLocationParams { location = playerLoc, position = playerPos });
     }
 
     public void RestoreLastPosition()
@@ -51,21 +80,6 @@ public class PlayerManager : MonoBehaviour
             _playerWorld.SetPosition(playerLastPos);
             _cameraWorld.SetPosition(cameraLastPos);
         }
-    }
-
-    public void SaveLastPosition()
-    {
-        if (PlayerPrefs.GetString("authToken", "null") == "null") return;
-        
-        string playerPos = _playerWorld.transform.position.ToString();
-        string playerLoc = SceneManager.GetActiveScene().name;
-
-        ApiManager.instance.Put<PlayerData>("player/me", new PlayerLocationParams { location = playerLoc, position = playerPos });
-    }
-
-    public void UpdateNickname(string text)
-    {
-        _playerWorld.UpdateNickname(text);
     }
 
     public void OnApplicationPause()
