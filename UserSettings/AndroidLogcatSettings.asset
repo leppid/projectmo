@@ -3,7 +3,7 @@
     "m_SelectedProcess": {
         "deviceId": "R58R33V3EJL",
         "name": "com.lepple.projectmo",
-        "processId": 15033,
+        "processId": 5881,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -534,6 +534,30 @@
             "deviceId": "R58R33V3EJL",
             "name": "com.lepple.projectmo",
             "processId": 15033,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 18872,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 3222,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 5424,
+            "exited": false
+        },
+        {
+            "deviceId": "R58R33V3EJL",
+            "name": "com.lepple.projectmo",
+            "processId": 5881,
             "exited": false
         }
     ],

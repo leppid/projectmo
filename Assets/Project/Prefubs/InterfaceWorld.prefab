@@ -229,7 +229,6 @@ GameObject:
   - component: {fileID: 6271699838460004032}
   - component: {fileID: 8590377926038548073}
   - component: {fileID: 2638726677799456571}
-  - component: {fileID: 2257944656470368278}
   m_Layer: 5
   m_Name: Bag
   m_TagString: Untagged
@@ -298,20 +297,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2257944656470368278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1894764484955364064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f46612b74ddc944b94381fbc379738b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectSwipeOnlyAfterRelease: 0
-  SWIPE_THRESHOLD: 300
 --- !u!1 &2895941847162574567
 GameObject:
   m_ObjectHideFlags: 0
@@ -1588,6 +1573,7 @@ GameObject:
   - component: {fileID: 4147615465402124506}
   - component: {fileID: 1346365760544655873}
   - component: {fileID: 3850838036561360246}
+  - component: {fileID: 7523003399198695840}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -1689,6 +1675,20 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &7523003399198695840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9081591863212673487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f46612b74ddc944b94381fbc379738b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectSwipeOnlyAfterRelease: 0
+  SWIPE_THRESHOLD: 100
 --- !u!1001 &583697795406689585
 PrefabInstance:
   m_ObjectHideFlags: 0

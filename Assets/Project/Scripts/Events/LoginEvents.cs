@@ -82,7 +82,7 @@ public class LoginEvents : MonoBehaviour
         else
         {
             logoClickedTimes = 0;
-            PlayerData guest = new() { displayName = "Guest", id = "-1", token = "none", location = "Hills", position = "(250.34, 0.57, 250.84)", bagPages = 1 };
+            PlayerData guest = new() { displayName = "Guest", id = "-1", token = "none", location = "Hills", position = "(250.34, 0.57, 250.84)", bagPages = 2 };
             PlayerPrefs.SetString("guestJson", JsonConvert.SerializeObject(guest));
             StartCoroutine(LoadPrototype());
         }

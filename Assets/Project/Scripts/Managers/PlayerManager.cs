@@ -8,7 +8,7 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager instance;
     public PlayerWorld _playerWorld;
     public CameraWorld _cameraWorld;
-    public PlayerData PlayerData = new() { displayName = "Guest", id = "-1", token = "none", location = "Hills", position = "(250.34, 0.57, 250.84)", bagPages = 1 };
+    public PlayerData PlayerData = new() { displayName = "Guest", id = "-1", token = "none", location = "Hills", position = "(250.34, 0.57, 250.84)", bagPages = 2 };
 
     public void Awake()
     {
@@ -27,7 +27,7 @@ public class PlayerManager : MonoBehaviour
             _cameraWorld = GameObject.Find("MainCamera").GetComponent<CameraWorld>();
 
         SetPrefsData();
-        RestoreLastPosition();
+        SpawnPlayer();
         _playerWorld.UpdateNickname(PlayerData.displayName);
     }
 
@@ -44,6 +44,24 @@ public class PlayerManager : MonoBehaviour
         {
             PlayerData = JsonConvert.DeserializeObject<PlayerData>(guestDataString);
         }
+    }
+
+    public void SpawnPlayer()
+    {
+        string forceSpawnString = PlayerPrefs.GetString("forceSpawnCords", "null");
+
+        if (forceSpawnString == "null")
+        {
+            RestoreLastPosition();
+        }
+        else
+        {
+            Vector3 forceSpawnCords = ProjectUtils.StringToVector3(forceSpawnString);
+            SetPlayerPosition(forceSpawnCords);
+            SaveLastPosition();
+        }
+
+        PlayerPrefs.DeleteKey("forceSpawnCords");
     }
 
     public void FetchPlayer()
@@ -75,11 +93,14 @@ public class PlayerManager : MonoBehaviour
         if (playerLastPosString.Length > 0)
         {
             Vector3 playerLastPos = ProjectUtils.StringToVector3(playerLastPosString);
-            Vector3 cameraLastPos = new Vector3(playerLastPos.x, playerLastPos.y + 26, playerLastPos.z - 17);
-
-            _playerWorld.SetPosition(playerLastPos);
-            _cameraWorld.SetPosition(cameraLastPos);
+            SetPlayerPosition(playerLastPos);
         }
+    }
+
+    public void SetPlayerPosition(Vector3 position)
+    {
+        _playerWorld.SetPosition(position);
+        _cameraWorld.SetPosition(new Vector3(position.x, position.y + 26, position.z - 17));
     }
 
     public void OnApplicationPause()

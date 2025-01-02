@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 using ProjectModels;
 using UnityEngine.XR;
 using Newtonsoft.Json;
+using System;
 
 public class WorldEvents : MonoBehaviour
 {
@@ -276,10 +277,16 @@ public class WorldEvents : MonoBehaviour
 
     private void LoadLocation()
     {
-        if (actionData.location.message != null)
+        InventoryManager.instance.SyncInventory();
+        if (actionData.location.message != "")
         {
             _messageBlock.text = actionData.location.message;
             StartCoroutine(ShowMessageEnum());
+        }
+        else
+        {
+            PlayerPrefs.SetString("forceSpawnCords", actionData.location.spawnPosition.ToString());
+            StartCoroutine(LoadLevelAsync(actionData.location.sceneName));
         }
     }
 
@@ -314,6 +321,26 @@ public class WorldEvents : MonoBehaviour
         _messageBlock.style.display = DisplayStyle.None;
         yield return null;
         StopAllCoroutines();
+    }
+
+    public IEnumerator LoadLevelAsync(string sceneName)
+    {
+        DisplayCompass(false);
+        DisplayBottomBar(false);
+        _actionButton.style.display = DisplayStyle.None;
+        _loadingBlock.style.display = DisplayStyle.Flex;
+        yield return new WaitForSeconds(1);
+        AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
+        async.allowSceneActivation = false;
+
+        while (async.isDone == false)
+        {
+            if (async.progress == .9f)
+            {
+                async.allowSceneActivation = true;
+            }
+            yield return null;
+        }
     }
 
 }
