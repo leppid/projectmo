@@ -17,6 +17,7 @@ public class WorldEvents : MonoBehaviour
     private Button _messageBlock;
     private VisualElement _compassBlock;
     private Button _compassButton;
+    private Label _locationText;
     private VisualElement _bottomBar;
     private Button _menuButton;
     private Button _inventoryButton;
@@ -32,6 +33,7 @@ public class WorldEvents : MonoBehaviour
         _messageBlock = uiDoc.rootVisualElement.Q<Button>("MessageBlock");
         _compassBlock = uiDoc.rootVisualElement.Q<VisualElement>("CompassBlock");
         _compassButton = uiDoc.rootVisualElement.Q<Button>("CompassButton");
+        _locationText = uiDoc.rootVisualElement.Q<Label>("LocationText");
         _actionButton = uiDoc.rootVisualElement.Q<Button>("ActionButton");
         _bottomBar = uiDoc.rootVisualElement.Q<VisualElement>("BottomBar");
         _menuButton = uiDoc.rootVisualElement.Q<Button>("MenuButton");
@@ -56,18 +58,22 @@ public class WorldEvents : MonoBehaviour
         _messageBlock.clicked += CloseMessage;
         DisplayBottomBar(true);
         DisplayCompass(true);
+        ShowLocationText(delay: 0.5f);
+
     }
 
+    Coroutine DisplayBottomBarCoroutine;
 
     public void DisplayBottomBar(bool show = true)
     {
+        if (DisplayBottomBarCoroutine != null) return;
         if (show)
         {
-            StartCoroutine(ShowBottomBarEnum());
+            DisplayBottomBarCoroutine = StartCoroutine(ShowBottomBarEnum());
         }
         else
         {
-            StartCoroutine(HideBottomBarEnum());
+            DisplayBottomBarCoroutine = StartCoroutine(HideBottomBarEnum());
         }
     }
 
@@ -75,6 +81,7 @@ public class WorldEvents : MonoBehaviour
     {
         yield return new WaitForSeconds(.2f);
         _bottomBar.style.bottom = 0f;
+        DisplayBottomBarCoroutine = null;
     }
 
     private IEnumerator HideBottomBarEnum()
@@ -82,6 +89,7 @@ public class WorldEvents : MonoBehaviour
         DisplayMenu(false);
         yield return new WaitForSeconds(.2f);
         _bottomBar.style.bottom = -220f;
+        DisplayBottomBarCoroutine = null;
     }
 
     private bool IsMenuOpen = false;
@@ -92,16 +100,18 @@ public class WorldEvents : MonoBehaviour
         DisplayMenu(!IsMenuOpen);
     }
 
+    Coroutine DisplayMenuBlockCoroutine;
+
     public void DisplayMenu(bool show = true)
     {
+        if (DisplayMenuBlockCoroutine != null) return;
         if (show)
         {
-
-            StartCoroutine(ShowMenuBlockEnum());
+            DisplayMenuBlockCoroutine = StartCoroutine(ShowMenuBlockEnum());
         }
         else
         {
-            StartCoroutine(HideMenuBlockEnum());
+            DisplayMenuBlockCoroutine = StartCoroutine(HideMenuBlockEnum());
         }
     }
 
@@ -114,6 +124,7 @@ public class WorldEvents : MonoBehaviour
             _menuBlock.style.bottom = 220f;
             _menuButton.AddToClassList("menu-button-active");
             yield return null;
+            DisplayMenuBlockCoroutine = null;
         }
     }
 
@@ -126,6 +137,7 @@ public class WorldEvents : MonoBehaviour
             yield return new WaitForSeconds(.2f);
             _menuBlock.style.display = DisplayStyle.None;
             _menuButton.RemoveFromClassList("menu-button-active");
+            DisplayMenuBlockCoroutine = null;
 
         }
     }
@@ -138,15 +150,18 @@ public class WorldEvents : MonoBehaviour
         DisplayInventory(!IsInventoryOpen);
     }
 
+    Coroutine DisplayInventoryBlockCoroutine;
+
     public void DisplayInventory(bool show = true)
     {
+        if (DisplayInventoryBlockCoroutine != null) return;
         if (show)
         {
-            StartCoroutine(ShowInventoryBlockEnum());
+            DisplayInventoryBlockCoroutine = StartCoroutine(ShowInventoryBlockEnum());
         }
         else
         {
-            StartCoroutine(HideInventoryBlockEnum());
+            DisplayInventoryBlockCoroutine = StartCoroutine(HideInventoryBlockEnum());
         }
     }
 
@@ -160,6 +175,7 @@ public class WorldEvents : MonoBehaviour
             PlayerManager.instance._playerWorld.GetComponent<Animator>().Play("SpotLightOn");
             DisplayCompass(false);
             yield return null;
+            DisplayInventoryBlockCoroutine = null;
         }
     }
 
@@ -176,19 +192,23 @@ public class WorldEvents : MonoBehaviour
             _inventoryObject.SetActive(false);
             _inventoryButton.RemoveFromClassList("menu-button-active");
             IsInventoryOpen = false;
+            DisplayInventoryBlockCoroutine = null;
 
         }
     }
 
+    Coroutine DisplayCompassCoroutine;
+
     public void DisplayCompass(bool show = true)
     {
+        if (DisplayCompassCoroutine != null) return;
         if (show)
         {
-            StartCoroutine(ShowCompassEnum());
+            DisplayCompassCoroutine = StartCoroutine(ShowCompassEnum());
         }
         else
         {
-            StartCoroutine(HideCompassEnum());
+            DisplayCompassCoroutine = StartCoroutine(HideCompassEnum());
         }
     }
 
@@ -197,6 +217,7 @@ public class WorldEvents : MonoBehaviour
         _compassBlock.style.display = DisplayStyle.Flex;
         yield return new WaitForSeconds(.1f);
         _compassBlock.style.top = 0f;
+        DisplayCompassCoroutine = null;
 
     }
 
@@ -205,16 +226,40 @@ public class WorldEvents : MonoBehaviour
         _compassBlock.style.top = -500f;
         yield return new WaitForSeconds(.3f);
         _compassBlock.style.display = DisplayStyle.None;
+        DisplayCompassCoroutine = null;
     }
 
     public void RotateCompass(float angle)
     {
-        _compassBlock.transform.rotation = Quaternion.Euler(0, 0, angle);
+        _compassButton.transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
     public void ResetCompass()
     {
+        ShowLocationText();
         UIManager.instance.ResetCompass();
+    }
+
+    Coroutine ShowLocationTextCoroutine;
+
+    public void ShowLocationText(float delay = 0f)
+    {
+        if (ShowLocationTextCoroutine != null) return;
+        _locationText.text = SceneManager.GetActiveScene().name;
+        ShowLocationTextCoroutine = StartCoroutine(ShowLocationTextEnum(delay));
+    }
+
+    IEnumerator ShowLocationTextEnum(float delay = 0f)
+    {
+        _locationText.style.opacity = 0f;
+        yield return new WaitForSeconds(delay);
+        _locationText.style.display = DisplayStyle.Flex;
+        _locationText.style.opacity = 1f;
+        yield return new WaitForSeconds(6f);
+        _locationText.style.opacity = 0f;
+        yield return new WaitForSeconds(0.5f);
+        _locationText.style.display = DisplayStyle.None;
+        ShowLocationTextCoroutine = null;
     }
 
     public void StartLogout()
@@ -281,7 +326,7 @@ public class WorldEvents : MonoBehaviour
         if (actionData.location.message != "")
         {
             _messageBlock.text = actionData.location.message;
-            StartCoroutine(ShowMessageEnum());
+            DisplayMessage(true);
         }
         else
         {
@@ -295,15 +340,18 @@ public class WorldEvents : MonoBehaviour
         DisplayMessage(false);
     }
 
+    Coroutine DisplayMessageCoroutine;
+
     public void DisplayMessage(bool show = true)
     {
+        if (DisplayMessageCoroutine != null) StopCoroutine(DisplayMessageCoroutine);
         if (show)
         {
-            StartCoroutine(ShowMessageEnum());
+            DisplayMessageCoroutine = StartCoroutine(ShowMessageEnum());
         }
         else
         {
-            StartCoroutine(HideMessageEnum());
+            DisplayMessageCoroutine = StartCoroutine(HideMessageEnum());
         }
     }
 
@@ -314,13 +362,14 @@ public class WorldEvents : MonoBehaviour
         _messageBlock.style.display = DisplayStyle.Flex;
         yield return new WaitForSeconds(5f);
         _messageBlock.style.display = DisplayStyle.None;
+        DisplayMessageCoroutine = null;
     }
 
     private IEnumerator HideMessageEnum()
     {
         _messageBlock.style.display = DisplayStyle.None;
         yield return null;
-        StopAllCoroutines();
+        DisplayMessageCoroutine = null;
     }
 
     public IEnumerator LoadLevelAsync(string sceneName)
