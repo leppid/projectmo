@@ -62,18 +62,15 @@ public class WorldEvents : MonoBehaviour
 
     }
 
-    Coroutine DisplayBottomBarCoroutine;
-
     public void DisplayBottomBar(bool show = true)
     {
-        if (DisplayBottomBarCoroutine != null) return;
         if (show)
         {
-            DisplayBottomBarCoroutine = StartCoroutine(ShowBottomBarEnum());
+            StartCoroutine(ShowBottomBarEnum());
         }
         else
         {
-            DisplayBottomBarCoroutine = StartCoroutine(HideBottomBarEnum());
+            StartCoroutine(HideBottomBarEnum());
         }
     }
 
@@ -81,7 +78,6 @@ public class WorldEvents : MonoBehaviour
     {
         yield return new WaitForSeconds(.2f);
         _bottomBar.style.bottom = 0f;
-        DisplayBottomBarCoroutine = null;
     }
 
     private IEnumerator HideBottomBarEnum()
@@ -89,7 +85,6 @@ public class WorldEvents : MonoBehaviour
         DisplayMenu(false);
         yield return new WaitForSeconds(.2f);
         _bottomBar.style.bottom = -220f;
-        DisplayBottomBarCoroutine = null;
     }
 
     private bool IsMenuOpen = false;
@@ -100,18 +95,15 @@ public class WorldEvents : MonoBehaviour
         DisplayMenu(!IsMenuOpen);
     }
 
-    Coroutine DisplayMenuBlockCoroutine;
-
     public void DisplayMenu(bool show = true)
     {
-        if (DisplayMenuBlockCoroutine != null) return;
         if (show)
         {
-            DisplayMenuBlockCoroutine = StartCoroutine(ShowMenuBlockEnum());
+            StartCoroutine(ShowMenuBlockEnum());
         }
         else
         {
-            DisplayMenuBlockCoroutine = StartCoroutine(HideMenuBlockEnum());
+            StartCoroutine(HideMenuBlockEnum());
         }
     }
 
@@ -124,7 +116,6 @@ public class WorldEvents : MonoBehaviour
             _menuBlock.style.bottom = 220f;
             _menuButton.AddToClassList("menu-button-active");
             yield return null;
-            DisplayMenuBlockCoroutine = null;
         }
     }
 
@@ -137,8 +128,6 @@ public class WorldEvents : MonoBehaviour
             yield return new WaitForSeconds(.2f);
             _menuBlock.style.display = DisplayStyle.None;
             _menuButton.RemoveFromClassList("menu-button-active");
-            DisplayMenuBlockCoroutine = null;
-
         }
     }
 
@@ -264,31 +253,10 @@ public class WorldEvents : MonoBehaviour
 
     public void StartLogout()
     {
-        DisplayCompass(false);
-        _mainBlock.style.display = DisplayStyle.None;
-        _loadingBlock.style.display = DisplayStyle.Flex;
-
         InventoryManager.instance.SyncInventory();
         PlayerManager.instance.SaveLastPosition();
         PlayerPrefs.SetString("IsLogOut", "true");
-
-        StartCoroutine(LoadLogin());
-    }
-
-    private IEnumerator LoadLogin()
-    {
-        yield return new WaitForSeconds(1);
-        AsyncOperation async = SceneManager.LoadSceneAsync("Login");
-        async.allowSceneActivation = false;
-
-        while (async.isDone == false)
-        {
-            if (async.progress == .9f)
-            {
-                async.allowSceneActivation = true;
-            }
-            yield return null;
-        }
+        StartCoroutine(LoadLevelAsync("Login"));
     }
 
     public void SetActionData(ActionData data)
@@ -376,6 +344,7 @@ public class WorldEvents : MonoBehaviour
     {
         DisplayCompass(false);
         DisplayBottomBar(false);
+        UIManager.instance.levelIsLoading = true;
         _actionButton.style.display = DisplayStyle.None;
         _loadingBlock.style.display = DisplayStyle.Flex;
         yield return new WaitForSeconds(1);

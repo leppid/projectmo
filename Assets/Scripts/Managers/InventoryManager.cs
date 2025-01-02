@@ -126,6 +126,8 @@ public class InventoryManager : MonoBehaviour
 
     public void SyncInventory()
     {
+        if (PlayerPrefs.GetString("authToken", "null") == "null") return;
+        
         ApiManager.instance.Post<ResponseHelper>("sync_inventory", new InventorySyncParams { data = inventoryData }).Then(res =>
         {
             Debug.Log("Inventory Synced");

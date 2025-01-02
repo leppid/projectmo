@@ -22,6 +22,7 @@ public class Location : MonoBehaviour
 
     void Update()
     {
+        _name.gameObject.SetActive(!UIManager.instance.levelIsLoading);
         _name.transform.rotation = Camera.main.transform.rotation;
     }
 

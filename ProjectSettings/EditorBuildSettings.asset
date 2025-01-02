@@ -6,13 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Project/Scenes/Login.unity
+    path: Assets/Scenes/Login.unity
     guid: 750feaf600c38ef488a184e4b493424a
   - enabled: 1
-    path: Assets/Project/Scenes/Regions/Hills.unity
+    path: Assets/Scenes/Regions/Hills.unity
     guid: 60f0d4f8eddb7e844b3b0994a340e5c6
   - enabled: 1
-    path: Assets/Project/Scenes/Locations/Raven Castle.unity
+    path: Assets/Scenes/Locations/Raven Castle.unity
     guid: d807b3d464b2dff45b3e8fee52b82027
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000,

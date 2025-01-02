@@ -6,6 +6,7 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
     public WorldEvents _interfaceWorld;
     public CameraWorld _cameraWorld;
+    public bool levelIsLoading = false;
 
     public void Awake()
     {
