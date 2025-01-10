@@ -177,6 +177,7 @@ public class WorldEvents : MonoBehaviour
             _inventoryObject.GetComponent<Animator>().Play("InventoryClose");
             PlayerManager.instance._playerWorld.GetComponent<Animator>().Play("SpotLightOff");
             yield return new WaitForSeconds(0.3f);
+            InventoryManager.instance.CloseItemInfo();
             InventoryManager.instance.ResetPages();
             _inventoryObject.SetActive(false);
             _inventoryButton.RemoveFromClassList("menu-button-active");

@@ -21,7 +21,6 @@ public class ApiManager : MonoBehaviour
             return;
         }
         _instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     private readonly string basePath = "http://91.202.145.155:3000/";

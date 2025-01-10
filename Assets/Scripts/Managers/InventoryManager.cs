@@ -15,6 +15,10 @@ public class InventoryManager : MonoBehaviour
     private Transform _inventory;
     private Transform _equipMover;
     private Transform _statsMover;
+    private Transform _item;
+    private Transform _itemInfo;
+    private Transform _itemHeader;
+    private Transform _itemStats;
     private Transform _stats;
     private Transform _char;
     private Transform _equip;
@@ -43,9 +47,13 @@ public class InventoryManager : MonoBehaviour
             return;
         }
 
-        _inventory = GameObject.Find("InterfaceWorld").transform.Find("Canvas").Find("Inventory");
+        _inventory = transform.root.Find("InterfaceWorld").Find("Canvas").Find("Inventory");
         _equipMover = _inventory.Find("EquipMover");
         _statsMover = _inventory.Find("StatsMover");
+        _item = _inventory.Find("Item");
+        _itemInfo = _item.Find("Info");
+        _itemHeader = _itemInfo.Find("Header");
+        _itemStats = _itemInfo.Find("Stats");
         _char = _equipMover.Find("Char");
         _equip = _equipMover.Find("Equip");
         _bag = _inventory.Find("Bag");
@@ -64,11 +72,11 @@ public class InventoryManager : MonoBehaviour
         swipeDetector.OnSwipeDownD += OnSwipeDown;
         swipeDetector.OnSwipeLeftD += OnSwipeLeft;
         swipeDetector.OnSwipeRightD += OnSwipeRight;
-        SpawnInventory();
     }
 
     public void Start()
     {
+        SpawnInventory();
         _stats.Find("Title").GetComponent<TextMeshProUGUI>().text = PlayerManager.instance.PlayerData.displayName + "'s Stats";
         UpdatePageCounter();
     }
@@ -127,7 +135,7 @@ public class InventoryManager : MonoBehaviour
     public void SyncInventory()
     {
         if (PlayerPrefs.GetString("authToken", "null") == "null") return;
-        
+
         ApiManager.instance.Post<ResponseHelper>("sync_inventory", new InventorySyncParams { data = inventoryData }).Then(res =>
         {
             Debug.Log("Inventory Synced");
@@ -218,6 +226,46 @@ public class InventoryManager : MonoBehaviour
             if (_bagSlots.GetChild(i).GetComponent<InventorySlot>().item == null) return _bagSlots.GetChild(i).GetComponent<InventorySlot>();
         }
         return null;
+    }
+
+    public void OpenItemInfo(InventoryItem item)
+    {
+        _itemHeader.Find("name").GetComponent<TextMeshProUGUI>().text = item.item.name;
+
+        TextMeshProUGUI mindmg = _itemStats.Find("mindmg").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI maxdmg = _itemStats.Find("maxdmg").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI crtdmg = _itemStats.Find("crtdmg").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI crtcnc = _itemStats.Find("crtcnc").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI hp = _itemStats.Find("hp").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI ep = _itemStats.Find("ep").GetComponent<TextMeshProUGUI>();
+
+        mindmg.text = mindmg.text.Replace("{{mindmg}}", "0");
+        maxdmg.text = maxdmg.text.Replace("{{maxdmg}}", "0");
+        crtdmg.text = crtdmg.text.Replace("{{crtdmg}}", "0");
+        crtcnc.text = crtcnc.text.Replace("{{crtcnc}}", "0");
+        hp.text = hp.text.Replace("{{hp}}", "0");
+        ep.text = ep.text.Replace("{{ep}}", "0");
+
+        _item.gameObject.SetActive(true);
+    }
+
+    public void CloseItemInfo()
+    {
+        _item.gameObject.SetActive(false);
+
+        TextMeshProUGUI mindmg = _itemStats.Find("mindmg").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI maxdmg = _itemStats.Find("maxdmg").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI crtdmg = _itemStats.Find("crtdmg").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI crtcnc = _itemStats.Find("crtcnc").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI hp = _itemStats.Find("hp").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI ep = _itemStats.Find("ep").GetComponent<TextMeshProUGUI>();
+
+        mindmg.text = "+ {{mindmg}} to <color=orange>Min Damage";
+        maxdmg.text = "+ {{maxdmg}} to <color=orange>Max Damage";
+        crtdmg.text = "+ {{crtdmg}} % to <color=orange>Crit Damage";
+        crtcnc.text = "+ {{crtcnc}} % to <color=orange>Crit Chance";
+        hp.text = "+ {{hp}} to <color=orange>Health";
+        ep.text = "+ {{ep}} to <color=orange>Evasion";
     }
 
     public void OnApplicationPause()

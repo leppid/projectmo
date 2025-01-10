@@ -16,11 +16,12 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private TextMeshProUGUI title;
     private Image image;
     public bool dragPressed = false;
+    public bool dragWasPressed = false;
     public bool isDragging = false;
 
     float clicked = 0;
     float clicktime = 0;
-    float clickdelay = 0.5f;
+    float clickdelay = 0.2f;
 
     void Awake()
     {
@@ -31,7 +32,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     void Update()
     {
         if (clicktime + clickdelay < Time.time) clicked = 0;
-        
+
         title.text = item.name;
 
         if (!isDragging)
@@ -69,31 +70,62 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
     }
 
+    Coroutine onPointerClickCoroutine;
+
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (dragPressed) return;
+
         clicked++;
 
         if (clicked == 1)
+        {
             clicktime = Time.time;
+            onPointerClickCoroutine = StartCoroutine(onPointerClickEnum());
+        }
 
         if (clicked > 1 && Time.time - clicktime < clickdelay)
         {
             // Double click detected
+            StopCoroutine(onPointerClickCoroutine);
             clicked = 0;
             clicktime = 0;
             if (item != null) Equip();
         }
         else if (clicked > 2 || Time.time - clicktime > 1)
+        {
             clicked = 0;
+        }
+    }
+
+    IEnumerator onPointerClickEnum()
+    {
+        yield return new WaitForSeconds(clickdelay);
+        if (!dragWasPressed)
+        {
+            InventoryManager.instance.OpenItemInfo(this);
+        }
     }
 
     public void DragPressed(bool enable)
     {
         transform.SetParent(slot.transform);
-        dragPressed = enable;
         transform.localScale = Vector3.one * (enable ? 1.1f : 1f);
         transform.GetComponent<CanvasGroup>().alpha = enable ? 0.8f : 1f;
+        if (enable)
+        {
+            dragPressed = true;
+        }
+        else
+        {
+            StartCoroutine(DragPressedEnum());
+        }
+    }
 
+    IEnumerator DragPressedEnum()
+    {
+        yield return new WaitForSeconds(0.1f);
+        dragPressed = false;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
