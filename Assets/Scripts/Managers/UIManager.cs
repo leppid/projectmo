@@ -6,7 +6,7 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
     public WorldEvents _interfaceWorld;
     public CameraWorld _cameraWorld;
-    public bool levelIsLoading = false;
+    public bool isLoading = false;
 
     public void Awake()
     {
@@ -24,11 +24,6 @@ public class UIManager : MonoBehaviour
         RotateCompassByCamera();
     }
 
-    public void DisplayBottomBar(bool show = true)
-    {
-        _interfaceWorld.DisplayBottomBar(show);
-    }
-
     public void DisplayCompass(bool show = true)
     {
         _interfaceWorld.DisplayCompass(show);
@@ -44,6 +39,11 @@ public class UIManager : MonoBehaviour
         _cameraWorld.Reset();
     }
 
+    public void DisplayBottomBar(bool show = true)
+    {
+        _interfaceWorld.DisplayBottomBar(show);
+    }
+
     public void SetActionData(ActionData data)
     {
 
@@ -52,8 +52,12 @@ public class UIManager : MonoBehaviour
 
     public void ClearActionData()
     {
-
         _interfaceWorld.ClearActionData();
+    }
+
+    public void DisplayLoading(bool loading)
+    {
+        _interfaceWorld.DisplayLoading(loading);
     }
 }
 

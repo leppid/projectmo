@@ -3,9 +3,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using ProjectModels;
-using UnityEngine.XR;
-using Newtonsoft.Json;
-using System;
 
 public class WorldEvents : MonoBehaviour
 {
@@ -50,27 +47,31 @@ public class WorldEvents : MonoBehaviour
     {
         _loadingBlock.style.display = DisplayStyle.None;
         _mainBlock.style.display = DisplayStyle.Flex;
-        _logoutButton.clicked += StartLogout;
+        _logoutButton.clicked += Logout;
         _menuButton.clicked += HandleMenu;
         _inventoryButton.clicked += HandleInventory;
         _compassButton.clicked += ResetCompass;
         _actionButton.clicked += HandleAction;
-        _messageBlock.clicked += CloseMessage;
+        _messageBlock.clicked += CloseActionMessage;
         DisplayBottomBar(true);
         DisplayCompass(true);
-        ShowLocationText(delay: 0.5f);
+        ShowLocationName(delay: 0.5f);
 
     }
 
+    Coroutine DisplayBottomBarCoroutine;
+
     public void DisplayBottomBar(bool show = true)
     {
+        if (DisplayBottomBarCoroutine != null) StopCoroutine(DisplayBottomBarCoroutine);
+        
         if (show)
         {
-            StartCoroutine(ShowBottomBarEnum());
+            DisplayBottomBarCoroutine = StartCoroutine(ShowBottomBarEnum());
         }
         else
         {
-            StartCoroutine(HideBottomBarEnum());
+            DisplayBottomBarCoroutine = StartCoroutine(HideBottomBarEnum());
         }
     }
 
@@ -143,7 +144,8 @@ public class WorldEvents : MonoBehaviour
 
     public void DisplayInventory(bool show = true)
     {
-        if (DisplayInventoryBlockCoroutine != null) return;
+        if (DisplayInventoryBlockCoroutine != null) StopCoroutine(DisplayInventoryBlockCoroutine);
+
         if (show)
         {
             DisplayInventoryBlockCoroutine = StartCoroutine(ShowInventoryBlockEnum());
@@ -191,7 +193,8 @@ public class WorldEvents : MonoBehaviour
 
     public void DisplayCompass(bool show = true)
     {
-        if (DisplayCompassCoroutine != null) return;
+        if (DisplayCompassCoroutine != null) StopCoroutine(DisplayCompassCoroutine);
+
         if (show)
         {
             DisplayCompassCoroutine = StartCoroutine(ShowCompassEnum());
@@ -226,20 +229,21 @@ public class WorldEvents : MonoBehaviour
 
     public void ResetCompass()
     {
-        ShowLocationText();
+        ShowLocationName();
         UIManager.instance.ResetCompass();
     }
 
-    Coroutine ShowLocationTextCoroutine;
+    Coroutine ShowLocationNameCoroutine;
 
-    public void ShowLocationText(float delay = 0f)
+    public void ShowLocationName(float delay = 0f)
     {
-        if (ShowLocationTextCoroutine != null) return;
+        if (ShowLocationNameCoroutine != null) return;
+
         _locationText.text = SceneManager.GetActiveScene().name;
-        ShowLocationTextCoroutine = StartCoroutine(ShowLocationTextEnum(delay));
+        ShowLocationNameCoroutine = StartCoroutine(ShowLocationNameEnum(delay));
     }
 
-    IEnumerator ShowLocationTextEnum(float delay = 0f)
+    IEnumerator ShowLocationNameEnum(float delay = 0f)
     {
         _locationText.style.opacity = 0f;
         yield return new WaitForSeconds(delay);
@@ -249,28 +253,25 @@ public class WorldEvents : MonoBehaviour
         _locationText.style.opacity = 0f;
         yield return new WaitForSeconds(0.5f);
         _locationText.style.display = DisplayStyle.None;
-        ShowLocationTextCoroutine = null;
-    }
-
-    public void StartLogout()
-    {
-        InventoryManager.instance.SyncInventory();
-        PlayerManager.instance.SaveLastPosition();
-        PlayerPrefs.SetString("IsLogOut", "true");
-        StartCoroutine(LoadLevelAsync("Login"));
+        ShowLocationNameCoroutine = null;
     }
 
     public void SetActionData(ActionData data)
     {
         actionData = data;
         _actionButton.text = data.buttonText();
-        _actionButton.style.display = DisplayStyle.Flex;
+        DisplayActionButton(true);
     }
 
     public void ClearActionData()
     {
-        _actionButton.style.display = DisplayStyle.None;
+        DisplayActionButton(false);
         actionData = null;
+    }
+
+    public void DisplayActionButton(bool show = true)
+    {
+        _actionButton.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
     public void HandleAction()
@@ -291,75 +292,68 @@ public class WorldEvents : MonoBehaviour
 
     private void LoadLocation()
     {
-        InventoryManager.instance.SyncInventory();
         if (actionData.location.message != "")
         {
             _messageBlock.text = actionData.location.message;
-            DisplayMessage(true);
+            DisplayActionMessage(true);
         }
         else
         {
             PlayerPrefs.SetString("forceSpawnCords", actionData.location.spawnPosition.ToString());
-            StartCoroutine(LoadLevelAsync(actionData.location.sceneName));
+            GameManager.instance.LoadLevel(actionData.location.sceneName);
         }
     }
 
-    public void CloseMessage()
+    public void CloseActionMessage()
     {
-        DisplayMessage(false);
+        DisplayActionMessage(false);
     }
 
-    Coroutine DisplayMessageCoroutine;
+    Coroutine DisplayActionMessageCoroutine;
 
-    public void DisplayMessage(bool show = true)
+    public void DisplayActionMessage(bool show = true)
     {
-        if (DisplayMessageCoroutine != null) StopCoroutine(DisplayMessageCoroutine);
+        if (DisplayActionMessageCoroutine != null) StopCoroutine(DisplayActionMessageCoroutine);
+
         if (show)
         {
-            DisplayMessageCoroutine = StartCoroutine(ShowMessageEnum());
+            DisplayActionMessageCoroutine = StartCoroutine(ShowActionMessageEnum());
         }
         else
         {
-            DisplayMessageCoroutine = StartCoroutine(HideMessageEnum());
+            DisplayActionMessageCoroutine = StartCoroutine(HideActionMessageEnum());
         }
     }
 
-    private IEnumerator ShowMessageEnum()
+    private IEnumerator ShowActionMessageEnum()
     {
-        InventoryManager.instance.SyncInventory();
         _actionButton.style.display = DisplayStyle.None;
         _messageBlock.style.display = DisplayStyle.Flex;
         yield return new WaitForSeconds(5f);
         _messageBlock.style.display = DisplayStyle.None;
-        DisplayMessageCoroutine = null;
+        DisplayActionMessageCoroutine = null;
     }
 
-    private IEnumerator HideMessageEnum()
+    private IEnumerator HideActionMessageEnum()
     {
         _messageBlock.style.display = DisplayStyle.None;
         yield return null;
-        DisplayMessageCoroutine = null;
+        DisplayActionMessageCoroutine = null;
     }
 
-    public IEnumerator LoadLevelAsync(string sceneName)
+    public void DisplayLoading(bool loading)
     {
-        DisplayCompass(false);
-        DisplayBottomBar(false);
-        UIManager.instance.levelIsLoading = true;
-        _actionButton.style.display = DisplayStyle.None;
-        _loadingBlock.style.display = DisplayStyle.Flex;
-        yield return new WaitForSeconds(1);
-        AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
-        async.allowSceneActivation = false;
-
-        while (async.isDone == false)
-        {
-            if (async.progress == .9f)
-            {
-                async.allowSceneActivation = true;
-            }
-            yield return null;
-        }
+        UIManager.instance.isLoading = loading;
+        _loadingBlock.style.display = loading ? DisplayStyle.Flex : DisplayStyle.None;
+        if (loading) DisplayActionButton(false);
+        DisplayCompass(!loading);
+        DisplayBottomBar(!loading);
     }
 
+    public void Logout()
+    {
+        PlayerManager.instance.SyncPlayerData();
+        PlayerPrefs.SetString("isLogout", "true");
+        GameManager.instance.LoadLevel("Login", false);
+    }
 }

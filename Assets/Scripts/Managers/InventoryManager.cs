@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using Newtonsoft.Json;
 using ProjectModels;
 using Proyecto26;
@@ -11,7 +10,7 @@ enum InventoryTab { Equip, Stats }
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
-    public ItemData[] inventoryData;
+    public ItemData[] inventoryData = new ItemData[0];
     private Transform _inventory;
     private Transform _equipMover;
     private Transform _statsMover;
@@ -77,8 +76,8 @@ public class InventoryManager : MonoBehaviour
     public void Start()
     {
         SpawnInventory();
-        _stats.Find("Title").GetComponent<TextMeshProUGUI>().text = PlayerManager.instance.PlayerData.displayName + "'s Stats";
         UpdatePageCounter();
+        _stats.Find("Title").GetComponent<TextMeshProUGUI>().text = PlayerManager.instance.PlayerData.displayName + "'s Stats";
     }
 
     public void Update()
@@ -86,6 +85,7 @@ public class InventoryManager : MonoBehaviour
         if (animateBagPageSwitch)
         {
             _bagSlots.localPosition = Vector3.Lerp(_bagSlots.localPosition, bagSlotsPos, 0.30f);
+
             if ((int)_bagSlots.localPosition.y == (int)bagSlotsPos.y)
             {
                 swipeDetector.enabled = true;
@@ -104,44 +104,74 @@ public class InventoryManager : MonoBehaviour
             InventorySlot slot = _bagSlots.GetChild(i).GetComponent<InventorySlot>();
             slot.RemoveItem();
         }
+
         for (int i = 0; i < _equipSlots.childCount - 1; i++)
         {
             InventorySlot slot = _equipSlots.GetChild(i).GetComponent<InventorySlot>();
             slot.RemoveItem();
         }
 
-        if (PlayerPrefs.GetString("authToken", "null") == "null") return;
+        string inventoryString = PlayerPrefs.GetString("inventoryJson", "null");
 
-        ApiManager.instance.GetArray<ItemData>("inventory")
-        .Then(res =>
+        if (PlayerPrefs.GetString("authToken", "null") == "null")
         {
-            inventoryData = res;
-            PlayerPrefs.SetString("inventoryJson", JsonConvert.SerializeObject(res));
-            for (int i = 0; i < res.Length; i++)
+            ItemData item1 = new() { id = "1", name = "Helmet", type = "Head", index = "0" };
+            ItemData item2 = new() { id = "2", name = "Armor", type = "Body", index = "1" };
+            ItemData item3 = new() { id = "3", name = "Boots", type = "Legs", index = "2" };
+            ItemData item4 = new() { id = "4", name = "Shield", type = "Secondary", index = "3" };
+            ItemData item5 = new() { id = "5", name = "Sword", type = "Primary", index = "4" };
+            ItemData[] testItems = new ItemData[] { item1, item2, item3, item4, item5 };
+            inventoryString = JsonConvert.SerializeObject(testItems);
+        }
+
+        if (inventoryString == "null") return;
+
+        inventoryData = JsonConvert.DeserializeObject<ItemData[]>(inventoryString);
+
+        for (int i = 0; i < inventoryData.Length; i++)
+        {
+            int slotIndex = int.Parse(inventoryData[i].index);
+            if (slotIndex >= 0)
             {
-                int slotIndex = int.Parse(res[i].index);
-                if (slotIndex >= 0)
-                {
-                    _bagSlots.GetChild(slotIndex).GetComponent<InventorySlot>().CreateItem(res[i]);
-                }
-                else
-                {
-                    _equipSlots.Find(res[i].type).GetComponent<InventorySlot>().CreateItem(res[i]);
-                }
+                _bagSlots.GetChild(slotIndex).GetComponent<InventorySlot>().CreateItem(inventoryData[i]);
             }
-        });
+            else
+            {
+                _equipSlots.Find(inventoryData[i].type).GetComponent<InventorySlot>().CreateItem(inventoryData[i]);
+            }
+        }
     }
 
-    public void SyncInventory()
+    public void SyncInventory(Action callback = null)
     {
-        if (PlayerPrefs.GetString("authToken", "null") == "null") return;
-
-        ApiManager.instance.Post<ResponseHelper>("sync_inventory", new InventorySyncParams { data = inventoryData }).Then(res =>
+        if (PlayerPrefs.GetString("authToken", "null") == "null")
         {
-            Debug.Log("Inventory Synced");
+            callback?.Invoke();
+            return;
+        };
+
+        ApiManager.instance.Post<ResponseHelper>("player/sync", new PlayerParams { inventory = inventoryData }).Then(res =>
+        {
+            ApiManager.instance.GetArray<ItemData>("player/inventory").Then(res =>
+            {
+                PlayerPrefs.SetString("inventoryJson", JsonConvert.SerializeObject(res));
+                callback?.Invoke();
+
+            }).Catch(err =>
+            {
+                callback?.Invoke();
+            });
         }).Catch(err =>
         {
-            Debug.Log("Inventory Sync Failed");
+            RequestException error = (RequestException)err.GetBaseException();
+            if (error.IsNetworkError)
+            {
+                PlayerPrefs.SetString("errorMessage", "Connection lost.");
+                PlayerPrefs.SetString("isLogout", "true");
+                GameManager.instance.LoadLevel("Login", false);
+                return;
+            }
+            callback?.Invoke();
         });
     }
 
@@ -266,10 +296,5 @@ public class InventoryManager : MonoBehaviour
         crtcnc.text = "+ {{crtcnc}} % to <color=orange>Crit Chance";
         hp.text = "+ {{hp}} to <color=orange>Health";
         ep.text = "+ {{ep}} to <color=orange>Evasion";
-    }
-
-    public void OnApplicationPause()
-    {
-        SyncInventory();
     }
 }

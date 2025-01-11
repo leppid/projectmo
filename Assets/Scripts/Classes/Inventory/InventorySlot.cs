@@ -73,7 +73,7 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         if (longPressStarted && transform.childCount > 1)
         {
             longPressTime += Time.deltaTime;
-            if (longPressTime > 0.15f)
+            if (longPressTime > 0.2f)
             {
                 OnLongPress();
             }

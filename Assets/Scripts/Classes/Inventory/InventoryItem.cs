@@ -21,7 +21,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     float clicked = 0;
     float clicktime = 0;
-    float clickdelay = 0.2f;
+    readonly float clickdelay = 0.2f;
 
     void Awake()
     {
@@ -81,12 +81,11 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         if (clicked == 1)
         {
             clicktime = Time.time;
-            onPointerClickCoroutine = StartCoroutine(onPointerClickEnum());
+            onPointerClickCoroutine = StartCoroutine(OnPointerClickEnum());
         }
 
         if (clicked > 1 && Time.time - clicktime < clickdelay)
         {
-            // Double click detected
             StopCoroutine(onPointerClickCoroutine);
             clicked = 0;
             clicktime = 0;
@@ -98,9 +97,10 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
     }
 
-    IEnumerator onPointerClickEnum()
+    IEnumerator OnPointerClickEnum()
     {
         yield return new WaitForSeconds(clickdelay);
+
         if (!dragWasPressed)
         {
             InventoryManager.instance.OpenItemInfo(this);

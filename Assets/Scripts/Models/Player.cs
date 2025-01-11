@@ -12,20 +12,16 @@ namespace ProjectModels
         public bool isGuest = false;
     }
 
-    public class PlayerSessionParams
+    public class SessionParams
     {
         public string login;
         public string password;
     }
 
-    public class PlayerLocationParams
+    public class PlayerParams
     {
         public string location;
         public string position;
-    }
-
-    public class InventorySyncParams
-    {
-        public ItemData[] data;
+        public ItemData[] inventory;
     }
 }

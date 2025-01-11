@@ -62,7 +62,7 @@ public class PlayerWorld : MonoBehaviour
             }
         }
         
-        _nickname.gameObject.SetActive(!UIManager.instance.levelIsLoading);
+        _nickname.gameObject.SetActive(!UIManager.instance.isLoading);
         _nickname.transform.rotation = Camera.main.transform.rotation;
     }
 
