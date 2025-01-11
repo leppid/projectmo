@@ -260,7 +260,7 @@ public class InventoryManager : MonoBehaviour
 
     public void OpenItemInfo(InventoryItem item)
     {
-        _itemHeader.Find("name").GetComponent<TextMeshProUGUI>().text = item.item.name;
+        _itemHeader.Find("icon").Find("name").GetComponent<TextMeshProUGUI>().text = item.item.name;
 
         TextMeshProUGUI mindmg = _itemStats.Find("mindmg").GetComponent<TextMeshProUGUI>();
         TextMeshProUGUI maxdmg = _itemStats.Find("maxdmg").GetComponent<TextMeshProUGUI>();
