@@ -15,13 +15,15 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public ItemType type;
     private TextMeshProUGUI title;
     private Image image;
-    public bool dragPressed = false;
-    public bool dragWasPressed = false;
-    public bool isDragging = false;
 
     float clicked = 0;
     float clicktime = 0;
-    readonly float clickdelay = 0.2f;
+    readonly float doubleClickDelay = 0.2f;
+
+    public bool isDragReady = false;
+    public bool wasDragReady = false;
+    public bool isDrag = false;
+
 
     void Awake()
     {
@@ -31,11 +33,15 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     void Update()
     {
-        if (clicktime + clickdelay < Time.time) clicked = 0;
+        if (clicktime + doubleClickDelay < Time.time)
+        {
+            clicked = 0;
+            clicktime = 0;
+        }
 
         title.text = item.name;
 
-        if (!isDragging)
+        if (!isDragReady)
         {
             slot = transform.parent.GetComponent<InventorySlot>();
             transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, 0.5f);
@@ -74,7 +80,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (dragPressed) return;
+        if (isDragReady) return;
 
         clicked++;
 
@@ -84,84 +90,81 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             onPointerClickCoroutine = StartCoroutine(OnPointerClickEnum());
         }
 
-        if (clicked > 1 && Time.time - clicktime < clickdelay)
+        if (clicked > 1 && Time.time - clicktime < doubleClickDelay)
         {
             StopCoroutine(onPointerClickCoroutine);
             clicked = 0;
             clicktime = 0;
             if (item != null) Equip();
         }
-        else if (clicked > 2 || Time.time - clicktime > 1)
-        {
-            clicked = 0;
-        }
     }
 
     IEnumerator OnPointerClickEnum()
     {
-        yield return new WaitForSeconds(clickdelay);
+        yield return new WaitForSeconds(doubleClickDelay);
 
-        if (!dragWasPressed)
+        if (!wasDragReady)
         {
             InventoryManager.instance.OpenItemInfo(this);
         }
     }
 
-    public void DragPressed(bool enable)
+    public void SetDragReady(bool enable)
     {
-        transform.SetParent(slot.transform);
         transform.localScale = Vector3.one * (enable ? 1.1f : 1f);
         transform.GetComponent<CanvasGroup>().alpha = enable ? 0.8f : 1f;
+
         if (enable)
         {
-            dragPressed = true;
+            Transform root = GameObject.Find("Inventory").transform;
+            transform.SetParent(root);
+            transform.SetAsLastSibling();
+            isDragReady = true;
+            wasDragReady = true;
         }
         else
         {
-            StartCoroutine(DragPressedEnum());
+            transform.SetParent(slot.transform);
+            isDragReady = false;
+            StartCoroutine(WasDragReadyEnum(false));
+
         }
     }
 
-    IEnumerator DragPressedEnum()
+    IEnumerator WasDragReadyEnum(bool was = true)
     {
-        yield return new WaitForSeconds(0.1f);
-        dragPressed = false;
+        yield return new WaitForSeconds(doubleClickDelay + .1f);
+        wasDragReady = was;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (!dragPressed) return;
+        if (!isDragReady) return;
 
         image.raycastTarget = false;
-        dragPressed = false;
-        isDragging = true;
-        InventoryManager.instance.isDragging = true;
+        isDrag = true;
+        InventoryManager.instance.isDrag = true;
         InventoryManager.instance.EnableHoverSwipers(true);
-        Transform root = GameObject.Find("Inventory").transform;
-        transform.SetParent(root);
-        transform.SetAsLastSibling();
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!isDragging) return;
+        if (!isDrag && !isDragReady) return;
 
         transform.position = Vector2.Lerp(transform.position, eventData.position, 0.5f);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (!isDragging) return;
-
-        isDragging = false;
-        DragPressed(false);
+        isDrag = false;
+        SetDragReady(false);
         StartCoroutine(OnEndDragEnum());
     }
 
     IEnumerator OnEndDragEnum()
     {
         yield return new WaitForSeconds(0.1f);
-        InventoryManager.instance.isDragging = false;
+        InventoryManager.instance.isDrag = false;
         InventoryManager.instance.EnableHoverSwipers(false);
         image.raycastTarget = true;
     }

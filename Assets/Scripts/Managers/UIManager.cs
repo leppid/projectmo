@@ -59,5 +59,10 @@ public class UIManager : MonoBehaviour
     {
         _interfaceWorld.DisplayLoading(loading);
     }
+
+    public bool IsInventoryOpen()
+    {
+        return _interfaceWorld.IsInventoryOpen;
+    }
 }
 

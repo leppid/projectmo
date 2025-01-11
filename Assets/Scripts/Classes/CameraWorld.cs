@@ -22,6 +22,8 @@ public class CameraWorld : MonoBehaviour
 
         Folow();
 
+        if (UIManager.instance.IsInventoryOpen()) return;
+
         if (Input.touchCount < 2) return;
 
         Touch t1 = Input.touches[0];

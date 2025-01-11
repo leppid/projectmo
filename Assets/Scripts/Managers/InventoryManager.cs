@@ -34,7 +34,7 @@ public class InventoryManager : MonoBehaviour
     private int bagPageCount = 1;
     private int currentBagPage = 1;
     private bool animateBagPageSwitch = false;
-    public bool isDragging = false;
+    public bool isDrag = false;
 
     public void Awake()
     {
@@ -200,7 +200,7 @@ public class InventoryManager : MonoBehaviour
 
     public void NextPage(bool force = false)
     {
-        if ((currentBagPage == bagPageCount) || (!force && isDragging)) return;
+        if ((currentBagPage == bagPageCount) || (!force && isDrag)) return;
         currentBagPage++;
         UpdatePageCounter();
         bagSlotsPos = new Vector3(_bagSlots.localPosition.x, _bagSlots.localPosition.y + 930f, _bagSlots.localPosition.z);
@@ -215,7 +215,7 @@ public class InventoryManager : MonoBehaviour
 
     public void PrevPage(bool force = false)
     {
-        if ((currentBagPage == 1) || (!force && isDragging)) return;
+        if ((currentBagPage == 1) || (!force && isDrag)) return;
         currentBagPage--;
         UpdatePageCounter();
         bagSlotsPos = new Vector3(_bagSlots.localPosition.x, _bagSlots.localPosition.y - 930f, _bagSlots.localPosition.z);

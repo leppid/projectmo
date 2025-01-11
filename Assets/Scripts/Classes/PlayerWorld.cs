@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerWorld : MonoBehaviour
@@ -22,6 +23,8 @@ public class PlayerWorld : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (UIManager.instance.IsInventoryOpen()) return;
+        
         Vector3 direction = Quaternion.Euler(0f, Camera.main.transform.eulerAngles.y, 0f) * new Vector3(_joystick.Horizontal * speed, _rigidbody.linearVelocity.y, _joystick.Vertical * speed);
         _rigidbody.linearVelocity = direction;
 

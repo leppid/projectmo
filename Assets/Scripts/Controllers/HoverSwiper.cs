@@ -27,13 +27,13 @@ public class HoverSwiper : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!InventoryManager.instance.isDragging) return;
+        if (!InventoryManager.instance.isDrag) return;
         isHovered = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (!InventoryManager.instance.isDragging) return;
+        if (!InventoryManager.instance.isDrag) return;
         isHovered = false;
         timer = 0;
     }

@@ -132,7 +132,7 @@ public class WorldEvents : MonoBehaviour
         }
     }
 
-    private bool IsInventoryOpen = false;
+    public bool IsInventoryOpen = false;
 
     public void HandleInventory()
     {

@@ -61,7 +61,10 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         }
         else
         {
-            item = null;
+            if (item != null)
+            {
+                item = item.isDragReady ? item : null;
+            }
             labelTextMesh.text = label;
         }
 
@@ -73,7 +76,7 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         if (longPressStarted && transform.childCount > 1)
         {
             longPressTime += Time.deltaTime;
-            if (longPressTime > 0.2f)
+            if (longPressTime > 0.18f)
             {
                 OnLongPress();
             }
@@ -97,8 +100,8 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         longPressStarted = false;
         longPressTime = 0;
 
-        if (item != null && item.dragPressed)
-            item.DragPressed(false);
+        if (item != null && item.isDragReady && !item.isDrag)
+            item.SetDragReady(false);
     }
 
     public void OnLongPress()
@@ -106,17 +109,17 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         longPressStarted = false;
         longPress = true;
 
-        if (item != null && !item.dragPressed && !item.isDragging)
-            item.DragPressed(true);
+        if (item != null && !item.isDragReady && !item.isDrag)
+            item.SetDragReady(true);
 
     }
 
     public void OnDrop(PointerEventData eventData)
     {
-        if (!InventoryManager.instance.isDragging) return;
-
         GameObject dropped = eventData.pointerDrag;
         InventoryItem droppedItem = dropped.GetComponent<InventoryItem>();
+
+        if (droppedItem != null && !droppedItem.isDragReady) return;
 
         PlaceItem(droppedItem);
     }

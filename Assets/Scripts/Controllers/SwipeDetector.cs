@@ -95,7 +95,6 @@ public class SwipeDetector : MonoBehaviour
     //////////////////////////////////CALLBACK FUNCTIONS/////////////////////////////
     void OnSwipeUp()
     {
-        Debug.Log("Swipe UP");
         if (OnSwipeUpD != null)
         {
             OnSwipeUpD();
@@ -104,7 +103,6 @@ public class SwipeDetector : MonoBehaviour
 
     void OnSwipeDown()
     {
-        Debug.Log("Swipe Down");
         if (OnSwipeDownD != null)
         {
             OnSwipeDownD();
@@ -113,7 +111,6 @@ public class SwipeDetector : MonoBehaviour
 
     void OnSwipeLeft()
     {
-        Debug.Log("Swipe Left");
         if (OnSwipeLeftD != null)
         {
             OnSwipeLeftD();
@@ -122,7 +119,6 @@ public class SwipeDetector : MonoBehaviour
 
     void OnSwipeRight()
     {
-        Debug.Log("Swipe Right");
         if (OnSwipeRightD != null)
         {
             OnSwipeRightD();
